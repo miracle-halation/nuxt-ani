@@ -9,7 +9,7 @@
 			cols="12"
 			class="test2"
 		>
-			大好きを共有できる仲間を求めて!!
+			<h1>大好きを共有できる仲間を求めて!!</h1>
 		</v-col>
 
 		<v-card
@@ -33,6 +33,19 @@
       <v-card-title>Cafe Badilico</v-card-title>
     </v-card>
 
+		<v-col
+			cols="12"
+			class="test3"
+		>
+			<h2>さあ！　始めよう！！</h2>
+			<v-btn
+				size="x-large"
+				color="success"
+				class="btn-test"
+			>
+				新規会員登録
+			</v-btn>
+		</v-col>
 
 	</v-row>
 
@@ -45,10 +58,17 @@
 	.test2{
 		text-align: center;
 		line-height: 200px;
-		font-size: 2rem;
+		margin: 10px auto;
+	}
+	.test3{
+		text-align: center;
 		margin: 10px auto;
 	}
 	.pa-2{
 		height: 200px;
+	}
+	.btn-test{
+		margin-top: 30px;
+		font-weight: bold;
 	}
 </style>
