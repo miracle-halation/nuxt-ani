@@ -52,7 +52,7 @@ export default {
   data () {
     return {
       clipped: false,
-      drawer: false,
+      drawer: true,
       fixed: false,
       items: [
         {
@@ -62,8 +62,13 @@ export default {
         },
         {
           icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire'
+          title: 'Login',
+          to: '/login'
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: 'SignUp',
+          to: '/signup'
         }
       ],
       miniVariant: false,
