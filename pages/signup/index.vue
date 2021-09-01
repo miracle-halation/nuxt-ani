@@ -6,7 +6,7 @@
 			</v-card-title>
 			<v-card-text>
 				<v-form>
-					<v-text-field label="ユーザ名" />
+					<v-text-field label="ニックネーム" />
 					<v-text-field label="メールアドレス" />
 					<v-text-field label="パスワード" />
 					<v-text-field label="パスワード確認" />
@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
-export default Vue.extend({
+export default ({
 
 })
 </script>

@@ -1,7 +1,6 @@
 <template>
 	<v-row no-gutters>
 		<v-img
-			:width="width"
 			src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
 			class="test"
 		></v-img>
@@ -15,7 +14,6 @@
 		<v-card
 			v-for="n in 3"
       :key="n"
-      :loading="loading"
       class="mx-auto my-12"
       max-width="374"
     >
