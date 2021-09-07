@@ -1,3 +1,5 @@
+import Cookie from 'universal-cookie'
+
 const config = {
 	headers: { "Content-Type": "multipart/form-data" }
 }
@@ -15,8 +17,10 @@ export const getters = {
 
 export const mutations = {
 	setUser(state, { user }){
+		const cookies = new Cookie()
 		state.user = user
 		state.isLoggedIn = true
+		cookies.set('user', user)
 	}
 }
 
@@ -30,7 +34,10 @@ export const actions = {
 		const res_data = await this.$axios.post('/auth', data, config)
 		const user_data = res_data.data
 		const user = user_data.data
-		if(user_data.status != "success") throw new Error('Failed create user')
-		commit('setUser', {user})
+		if(user_data.status != "success"){
+			throw new Error('Failed create user')
+		}else{
+			commit('setUser', {user})
+		}
 	}
 }

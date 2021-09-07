@@ -30,7 +30,7 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
-import Cookie from 'universal-cookie'
+
 
 export default {
 	asyncData(){
@@ -53,13 +53,11 @@ export default {
 		},
 		async handleSignUp(){
 			const formData = new FormData();
-			const cookies = new Cookie()
 			formData.append('nickname', this.nickname)
 			formData.append('email', this.email)
 			formData.append('password', this.password)
 			formData.append('icon', this.icon)
 			await this.signUp({data: formData})
-			cookies.set('user', JSON.stringify(this.user))
 			this.$router.push('/')
 		},
 		...mapActions('user', ['signUp'])
