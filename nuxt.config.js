@@ -40,7 +40,16 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/axios',
   ],
+
+  axios: {
+    baseUrl: 'http://localhost:8000'
+  },
+
+  router: {
+    middleware: ['auth-cookie']
+  },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
