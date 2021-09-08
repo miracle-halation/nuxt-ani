@@ -3,7 +3,7 @@ import Cookie from 'universal-cookie'
 const config = {
 	headers: { "Content-Type": "multipart/form-data" }
 }
-
+const cookies = new Cookie()
 
 export const state = () => ({
 	user: null,
@@ -17,10 +17,13 @@ export const getters = {
 
 export const mutations = {
 	setUser(state, { user }){
-		const cookies = new Cookie()
 		state.user = user
 		state.isLoggedIn = true
-		cookies.set('user', user)
+	},
+	logoutUser(state){
+		state.user = null
+		state.isLoggedIn = false
+		cookies.remove('user')
 	}
 }
 
@@ -31,6 +34,7 @@ export const actions = {
 		if(!user){
 			throw new Error('Invalid User')
 		}else{
+			cookies.set('user', {user})
 			commit('setUser', {user})
 		}
 	},
@@ -41,7 +45,11 @@ export const actions = {
 		if(user_data.status != "success"){
 			throw new Error('Failed create user')
 		}else{
+			cookies.set('user', {user})
 			commit('setUser', {user})
 		}
+	},
+	async logout({commit}){
+		commit('logoutUser')
 	}
 }

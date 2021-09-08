@@ -32,6 +32,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      <v-btn color="green" @click="handleLogout">ログアウト</v-btn>
     </v-app-bar>
     <v-main>
       <v-container fluid>
@@ -48,6 +49,8 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex'
+
 export default {
   data () {
     return {
@@ -76,6 +79,16 @@ export default {
       rightDrawer: false,
       title: 'オリジナルアプリ'
     }
+  },
+  computed:{
+		...mapGetters(['user'])
+	},
+  methods:{
+    async handleLogout(){
+      await this.logout()
+      this.$router.push('/login')
+    },
+    ...mapActions('user', ['logout'])
   }
 }
 </script>
