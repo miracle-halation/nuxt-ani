@@ -25,10 +25,14 @@ export const mutations = {
 }
 
 export const actions = {
-	async login({commit}){
-		const user = await this.$axios.post('/auth/sign_in')
-		if(!user) throw new Error('Invalid User')
-		commit('setUser', user)
+	async login({commit}, {data}){
+		const res_data = await this.$axios.post('/auth/sign_in', data)
+		const user = res_data.data.data
+		if(!user){
+			throw new Error('Invalid User')
+		}else{
+			commit('setUser', {user})
+		}
 	},
 	async signUp({commit}, {data}){
 		const res_data = await this.$axios.post('/auth', data, config)
