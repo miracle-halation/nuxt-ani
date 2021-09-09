@@ -32,7 +32,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <v-btn color="green" @click="handleLogout">ログアウト</v-btn>
+      <v-btn v-show="isLoggedIn" color="green" @click="handleLogout">ログアウト</v-btn>
     </v-app-bar>
     <v-main>
       <v-container fluid>
@@ -81,7 +81,7 @@ export default {
     }
   },
   computed:{
-		...mapGetters(['user'])
+    ...mapGetters('user', ['isLoggedIn'])
 	},
   methods:{
     async handleLogout(){
