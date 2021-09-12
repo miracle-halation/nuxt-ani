@@ -34,7 +34,7 @@ export const actions = {
 		if(!user){
 			throw new Error('Invalid User')
 		}else{
-			cookies.set('user', {user})
+			cookies.set('user', {user}, {maxAge: 86400})
 			commit('setUser', {user})
 		}
 	},
@@ -45,7 +45,7 @@ export const actions = {
 		if(user_data.status != "success"){
 			throw new Error('Failed create user')
 		}else{
-			cookies.set('user', {user})
+			cookies.set('user', {user}, {maxAge: 86400})
 			commit('setUser', {user})
 		}
 	},
