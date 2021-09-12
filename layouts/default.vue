@@ -4,6 +4,7 @@
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="!clipped"
+      :mobile-breakpoint="mobile_breakpoint"
       fixed
       app
     >
@@ -55,7 +56,7 @@ export default {
   data () {
     return {
       clipped: false,
-      drawer: true,
+      drawer: false,
       fixed: false,
       items: [
         {
@@ -75,8 +76,7 @@ export default {
         }
       ],
       miniVariant: false,
-      right: true,
-      rightDrawer: false,
+      mobile_breakpoint: 1904,
       title: 'オリジナルアプリ'
     }
   },
