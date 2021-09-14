@@ -8,7 +8,8 @@
       fixed
       app
     >
-      <v-list>
+    <!-- のちにチャットルームを表示するかも -->
+      <v-list v-if="!isLoggedIn">
         <v-list-item
           v-for="(item, i) in items"
           :key="i"
