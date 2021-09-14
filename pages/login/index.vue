@@ -51,6 +51,7 @@
 import {mapGetters, mapActions} from 'vuex'
 
 export default ({
+	middleware: 'authenticated',
 	asyncData(){
 		return {
 			email: "",
