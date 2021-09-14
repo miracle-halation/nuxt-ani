@@ -37,6 +37,7 @@
     </v-app-bar>
     <v-main>
       <v-container fluid>
+        <FlashMessage></FlashMessage>
         <Nuxt />
       </v-container>
     </v-main>
@@ -51,8 +52,12 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
+import FlashMessage from "~/components/FlashMessage.vue"
 
 export default {
+  components:{
+    FlashMessage: FlashMessage
+  },
   data () {
     return {
       clipped: false,

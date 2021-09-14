@@ -70,7 +70,6 @@ export default ({
 			formData.append('email', this.email)
 			formData.append('password', this.password)
 			await this.login({data: formData})
-			this.$router.push('/')
 		},
 		...mapActions('user', ['login'])
 	}

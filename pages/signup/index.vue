@@ -109,7 +109,6 @@ export default {
 			formData.append('password', this.password)
 			formData.append('icon', this.icon)
 			await this.signUp({data: formData})
-			this.$router.push('/')
 		},
 		...mapActions('user', ['signUp'])
 	}

@@ -28,28 +28,55 @@ export const mutations = {
 }
 
 export const actions = {
-	async login({commit}, {data}){
-		const res_data = await this.$axios.post('/auth/sign_in', data)
-		const user = res_data.data.data
-		if(!user){
-			throw new Error('Invalid User')
-		}else{
+	async login({commit, dispatch}, {data}){
+		await this.$axios.post('/auth/sign_in', data)
+		.then((response) => {
+			const res_data = response
+			const user = res_data.data.data
 			cookies.set('user', {user}, {maxAge: 86400})
 			commit('setUser', {user})
-		}
+			dispatch("flashMessage/showMessage", {
+				message: "ログインしました",
+				type: "green",
+				status: true
+			}, {root:true})
+			this.$router.push('/')
+		},
+		(error) => {
+			dispatch("flashMessage/showMessage", {
+				message: "ログインに失敗しました",
+				type: "red",
+				status: true
+			}, {root:true})
+		})
 	},
-	async signUp({commit}, {data}){
-		const res_data = await this.$axios.post('/auth', data, config)
-		const user_data = res_data.data
-		const user = user_data.data
-		if(user_data.status != "success"){
-			throw new Error('Failed create user')
-		}else{
-			cookies.set('user', {user}, {maxAge: 86400})
-			commit('setUser', {user})
-		}
+	async signUp({commit, dispatch}, {data}){
+		await this.$axios.post('/auth', data, config)
+			.then((response) => {
+				const user = response.data.data
+				cookies.set('user', {user}, {maxAge: 86400})
+				commit('setUser', {user})
+				dispatch("flashMessage/showMessage", {
+					message: "新規作成しました",
+					type: "green",
+					status: true
+				}, {root:true})
+				this.$router.push('/')
+			},
+			(error) => {
+				dispatch("flashMessage/showMessage", {
+					message: "作成に失敗しました",
+					type: "red",
+					status: true
+				}, {root:true})
+			})
 	},
-	async logout({commit}){
+	async logout({commit, dispatch}){
 		commit('logoutUser')
+		dispatch("flashMessage/showMessage", {
+			message: "ログアウトしました",
+			type: "green",
+			status: true
+		}, {root:true})
 	}
 }
