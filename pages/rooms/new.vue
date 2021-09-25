@@ -22,18 +22,6 @@
 								required
 							/>
 						</ValidationProvider>
-						<ValidationProvider
-							v-slot="{ errors }"
-							name="サブタイトル"
-							rules="required"
-						>
-							<v-text-field
-								v-model="subtitle"
-								label="サブタイトル"
-								:error-messages="errors"
-								required
-							/>
-						</ValidationProvider>
 						<v-file-input @change="setImage" label="画像" />
 						<v-checkbox
 							v-model="private"
@@ -64,15 +52,19 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 export default {
 	asyncData(){
 		return{
 			name:"",
-			subtitle: "",
 			description: "",
 			private: false,
 			image: null
 		}
+	},
+	computed:{
+		...mapGetters(['user/user'])
 	},
 	methods:{
 		async submit () {
@@ -81,6 +73,22 @@ export default {
 		async setImage(e){
 			this.image = e
 		},
+		async createRoom(){
+			const room = {
+				'name': this.name,
+				'description': this.description,
+				'private': this.private,
+				'leader': "aaaa",
+				'image': this.image
+			}
+			await this.$axios.post('/v1/rooms', room)
+			.then((response) => {
+				this.$router.push('/rooms')
+			},
+			(error) => {
+				console.log(error)
+			})
+		}
 	}
 }
 </script>
