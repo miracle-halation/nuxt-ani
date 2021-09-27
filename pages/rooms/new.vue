@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
 	asyncData(){
@@ -64,7 +64,7 @@ export default {
 		}
 	},
 	computed:{
-		...mapGetters(['user/user'])
+		...mapGetters('user', ['user'])
 	},
 	methods:{
 		async submit () {
@@ -78,7 +78,7 @@ export default {
 				'name': this.name,
 				'description': this.description,
 				'private': this.private,
-				'leader': "aaaa",
+				'leader': this.user.user.nickname,
 				'image': this.image
 			}
 			await this.$axios.post('/v1/rooms', room)
@@ -86,9 +86,14 @@ export default {
 				this.$router.push('/rooms')
 			},
 			(error) => {
-				console.log(error)
+				this.showMessage({
+					message: "作成に失敗しました",
+					type: "red",
+					status: true
+				})
 			})
-		}
+		},
+		...mapActions('flashMessage', ['showMessage'])
 	}
 }
 </script>
