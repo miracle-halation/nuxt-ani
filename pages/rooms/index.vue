@@ -92,6 +92,7 @@
 
 <script>
 export default {
+  middleware: 'authenticated',
 	asyncData(){
 		return{
       model: null,

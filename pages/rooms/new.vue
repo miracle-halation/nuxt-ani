@@ -24,7 +24,7 @@
 						</ValidationProvider>
 						<v-file-input @change="setImage" label="画像" />
 						<v-checkbox
-							v-model="private"
+							v-model="private_data"
 							label="非公開にする"
 						></v-checkbox>
 						<ValidationProvider
@@ -55,11 +55,12 @@
 import {mapGetters, mapActions} from 'vuex'
 
 export default {
+	middleware: 'authenticated',
 	asyncData(){
 		return{
 			name:"",
 			description: "",
-			private: false,
+			private_data: false,
 			image: null
 		}
 	},
@@ -77,7 +78,7 @@ export default {
 			const room = {
 				'name': this.name,
 				'description': this.description,
-				'private': this.private,
+				'private': this.private_data,
 				'leader': this.user.user.nickname,
 				'image': this.image
 			}
