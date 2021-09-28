@@ -34,7 +34,7 @@
         </v-slide-group>
 
       <!-- ここに最新のルームを表示 -->
-            <v-row><h1>最新ルーム</h1></v-row>
+        <v-row><h1>最新ルーム</h1></v-row>
         <v-slide-group
           v-model="model"
           class="pa-4"
