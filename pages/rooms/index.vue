@@ -42,8 +42,8 @@
           show-arrows
         >
           <v-slide-item
-            v-for="n in 12"
-            :key="n"
+            v-for="room in this.rooms_data"
+            :key="room.id"
           >
             <v-row no-gutters class="test">
               <v-card
@@ -55,10 +55,10 @@
                   height="200px"
                 ></v-img>
                 <v-card-title>
-                  Top western road trips
+                  {{room.name}}
                 </v-card-title>
                 <v-card-subtitle>
-                  1,000 miles of wonder
+                  {{room.description}}
                 </v-card-subtitle>
               </v-card>
             </v-row>
@@ -95,8 +95,23 @@ export default {
 	asyncData(){
 		return{
       model: null,
+      rooms_data: null
 		}
 	},
+  mounted(){
+    this.fetchRooms()
+  },
+  methods:{
+    fetchRooms(){
+      this.$axios.get('v1/rooms')
+      .then((response) => {
+        this.rooms_data = response.data.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
+  }
 }
 </script>
 
