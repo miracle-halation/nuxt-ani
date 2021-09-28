@@ -1,4 +1,4 @@
-export default async ({store, route, redirect}) => {
+export default async ({store, redirect}) => {
 	const auth = store.getters['user/isLoggedIn']
 	if(!auth){
 		return redirect('/login')

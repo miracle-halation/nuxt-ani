@@ -49,10 +49,10 @@ export default {
   },
 
   router: {
-    middleware: [
-      'auth-cookie',
-      'is_login'
-    ]
+    // middleware: [
+    //   'auth-cookie',
+    //   'is_login'
+    // ]
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
