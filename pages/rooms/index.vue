@@ -46,21 +46,23 @@
             :key="room.id"
           >
             <v-row no-gutters class="test">
-              <v-card
-                class="mx-auto"
-                max-width="340"
-              >
-                <v-img
-                  src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-                  height="200px"
-                ></v-img>
-                <v-card-title>
-                  {{room.name}}
-                </v-card-title>
-                <v-card-subtitle>
-                  {{room.description}}
-                </v-card-subtitle>
-              </v-card>
+              <nuxt-link :to="`/rooms/${room.id}`">
+                <v-card
+                  class="mx-auto"
+                  max-width="340"
+                >
+                  <v-img
+                    src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                    height="200px"
+                  ></v-img>
+                  <v-card-title>
+                    {{room.name}}
+                  </v-card-title>
+                  <v-card-subtitle>
+                    {{room.description}}
+                  </v-card-subtitle>
+                </v-card>
+              </nuxt-link>
             </v-row>
           </v-slide-item>
         </v-slide-group>
