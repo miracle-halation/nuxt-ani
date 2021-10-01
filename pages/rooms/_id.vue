@@ -61,6 +61,7 @@ export default {
 	asyncData(){
 		return{
 			room: null,
+			users: null,
       items: [
         { text: 'Real-Time', icon: 'mdi-clock' },
         { text: 'Audience', icon: 'mdi-account' },
@@ -75,7 +76,8 @@ export default {
 		async fetchRoom(){
 			await this.$axios.get(`/v1/rooms/${this.$route.params.id}`)
 			.then((response) => {
-				this.room = response.data.data
+				this.room = response.data.data[0]
+				this.users = response.data.data[1][0]
 			})
 			.catch((error) => {
 				console.log(error)
