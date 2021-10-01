@@ -53,7 +53,7 @@
       <v-btn v-show="isLoggedIn" color="green" @click="handleLogout">ログアウト</v-btn>
     </v-app-bar>
     <v-main>
-      <v-container fluid>
+      <v-container class="main-container" fluid>
         <FlashMessage></FlashMessage>
         <Nuxt />
       </v-container>
@@ -126,3 +126,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .main-container{
+    padding: 0 !important;;
+  }
+</style>
