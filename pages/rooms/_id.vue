@@ -19,6 +19,22 @@
 							<v-list-item-action-text v-else>プライベート</v-list-item-action-text>
 						</v-list-item-content>
 					</v-list-item>
+					<v-list-item>
+						<v-btn
+							depressed
+							color="primary"
+						>
+							加入申請
+						</v-btn>
+					</v-list-item>
+					<v-list-item>
+						<v-btn
+							depressed
+							color="error"
+						>
+							脱退
+						</v-btn>
+					</v-list-item>
 				</v-list-item-group>
 			</v-list>
 		</v-card>
