@@ -30,6 +30,14 @@
 					<v-list-item>
 						<v-btn
 							depressed
+							color="success"
+						>
+							編集
+						</v-btn>
+					</v-list-item>
+					<v-list-item>
+						<v-btn
+							depressed
 							color="error"
 						>
 							脱退
