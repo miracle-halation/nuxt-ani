@@ -5,22 +5,18 @@
 			max-width="300"
 			tile
 		>
-			<v-list dense>
-				<v-list-item-title class="list-title">Test</v-list-item-title>
+			<v-list dense >
+				<v-list-item-title class="list-title">{{room.name}}</v-list-item-title>
 				<v-list-item-group>
 					<v-list-item>
 						<v-list-item-content>
-							<v-list-item-action-text>taaaaetete</v-list-item-action-text>
+							<v-list-item-action-text>{{room.leader}}</v-list-item-action-text>
 						</v-list-item-content>
 					</v-list-item>
 					<v-list-item>
 						<v-list-item-content>
-							<v-list-item-action-text>tagsgfsrgfaaaetete</v-list-item-action-text>
-						</v-list-item-content>
-					</v-list-item>
-					<v-list-item>
-						<v-list-item-content>
-							<v-list-item-action-text>taaaaeteteだgぜ</v-list-item-action-text>
+							<v-list-item-action-text v-if="`${room.private}`">パブリック</v-list-item-action-text>
+							<v-list-item-action-text v-else>プライベート</v-list-item-action-text>
 						</v-list-item-content>
 					</v-list-item>
 				</v-list-item-group>
@@ -39,14 +35,14 @@
 				<v-list-item-title class="list-title">所属ユーザー</v-list-item-title>
 				<v-list-item-group>
 					<v-list-item
-						v-for="(item, i) in items"
+						v-for="(user, i) in users"
 						:key="i"
 					>
 						<v-list-item-avatar>
             	<v-img src="https://picsum.photos/id/11/500/300"></v-img>
           	</v-list-item-avatar>
 						<v-list-item-content>
-							<v-list-item-action-text v-text="item.text"></v-list-item-action-text>
+							<v-list-item-action-text v-text="user.nickname"></v-list-item-action-text>
 						</v-list-item-content>
 					</v-list-item>
 				</v-list-item-group>
@@ -60,7 +56,7 @@
 export default {
 	asyncData(){
 		return{
-			room: null,
+			room: {},
 			users: null,
       items: [
         { text: 'Real-Time', icon: 'mdi-clock' },
@@ -76,8 +72,13 @@ export default {
 		async fetchRoom(){
 			await this.$axios.get(`/v1/rooms/${this.$route.params.id}`)
 			.then((response) => {
-				this.room = response.data.data[0]
-				this.users = response.data.data[1][0]
+				const room_data = response.data.data[0]
+				this.room['name'] = room_data.name
+				this.room['description'] = room_data.description
+				this.room['leader'] = room_data.leader
+				this.room['private'] = room_data.private
+				this.room['created_at'] = room_data.created_at
+				this.users = response.data.data[1]
 			})
 			.catch((error) => {
 				console.log(error)
