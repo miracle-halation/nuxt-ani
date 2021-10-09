@@ -101,8 +101,8 @@ export default {
 				this.room['description'] = room_data.description
 				this.room['leader'] = room_data.leader
 				this.room['private'] = room_data.private
-				this.room['created_at'] = room_data.created_at
 				this.users = response.data.data[1]
+				console.log(room_data)
 			})
 			.catch((error) => {
 				console.log(error)
