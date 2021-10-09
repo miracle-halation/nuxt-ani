@@ -75,14 +75,16 @@ export default {
 			this.image = e
 		},
 		async createRoom(){
-			const room = {
-				'name': this.name,
-				'description': this.description,
-				'private': this.private_data,
-				'leader': this.user.user.nickname,
-				'image': this.image
+			const formData = new FormData()
+			formData.append('room[name]', this.name)
+			formData.append('room[description]', this.description)
+			formData.append('room[private]', this.private_data)
+			formData.append('room[leader]', this.user.user.nickname)
+			formData.append('room[image]', this.image)
+			const config = {
+				headers: { "Content-Type": "multipart/form-data" }
 			}
-			await this.$axios.post('/v1/rooms', room)
+			await this.$axios.post('/v1/rooms', formData, config)
 			.then((response) => {
 				this.$router.push('/rooms')
 			},
