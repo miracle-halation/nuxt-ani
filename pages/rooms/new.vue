@@ -80,7 +80,9 @@ export default {
 			formData.append('room[description]', this.description)
 			formData.append('room[private]', this.private_data)
 			formData.append('room[leader]', this.user.user.nickname)
-			formData.append('room[image]', this.image)
+			if(this.image){
+				formData.append('room[image]', this.image)
+			}
 			const config = {
 				headers: { "Content-Type": "multipart/form-data" }
 			}
