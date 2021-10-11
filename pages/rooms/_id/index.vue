@@ -42,6 +42,15 @@
 						</v-btn>
 						</nuxt-link>
 					</v-list-item>
+					<v-list-item v-if="`${user.user.nickname}` == `${room.leader}`">
+						<v-btn
+							depressed
+							color="error"
+							@click="deleteRoom"
+						>
+							ルーム削除
+						</v-btn>
+					</v-list-item>
 					<v-list-item>
 						<v-btn
 							depressed
@@ -115,6 +124,19 @@ export default {
 			.catch((error) => {
 				console.log(error)
 			})
+		},
+		async deleteRoom(){
+			if(this.user.user.nickname === this.room.leader){
+				await this.$axios.delete(`/v1/rooms/${this.$route.params.id}`)
+				.then((response) => {
+					this.$router.push('/rooms')
+				})
+				.catch((error) => {
+					console.log(error)
+				})
+			}else{
+
+			}
 		}
 	}
 }
