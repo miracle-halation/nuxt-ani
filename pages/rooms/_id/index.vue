@@ -32,7 +32,7 @@
 							加入申請
 						</v-btn>
 					</v-list-item>
-					<v-list-item>
+					<v-list-item v-if="`${user.user.nickname}` == `${room.leader}`">
 						<nuxt-link :to="room.id + '/edit'">
 						<v-btn
 							depressed
@@ -84,12 +84,18 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 export default {
+	middleware: 'authenticated',
 	asyncData(){
 		return{
 			room: {},
 			users: null,
 		}
+	},
+	computed:{
+		...mapGetters('user', ['user'])
 	},
 	mounted(){
 		this.fetchRoom()
