@@ -32,7 +32,7 @@
 							加入申請
 						</v-btn>
 					</v-list-item>
-					<v-list-item v-if="`${user.user.nickname}` == `${room.leader}`">
+					<v-list-item v-if="`${user.user.nickname}` === `${room.leader}`">
 						<nuxt-link :to="room.id + '/edit'">
 						<v-btn
 							depressed
@@ -42,7 +42,7 @@
 						</v-btn>
 						</nuxt-link>
 					</v-list-item>
-					<v-list-item v-if="`${user.user.nickname}` == `${room.leader}`">
+					<v-list-item v-if="`${user.user.nickname}` === `${room.leader}`">
 						<v-btn
 							depressed
 							color="error"
