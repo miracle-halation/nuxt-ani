@@ -33,12 +33,14 @@
 						</v-btn>
 					</v-list-item>
 					<v-list-item>
+						<nuxt-link :to="room.id + '/edit'">
 						<v-btn
 							depressed
 							color="success"
 						>
 							編集
 						</v-btn>
+						</nuxt-link>
 					</v-list-item>
 					<v-list-item>
 						<v-btn
@@ -97,12 +99,12 @@ export default {
 			await this.$axios.get(`/v1/rooms/${this.$route.params.id}`)
 			.then((response) => {
 				const room_data = response.data.data[0]
+				this.room['id'] = room_data.id
 				this.room['name'] = room_data.name
 				this.room['description'] = room_data.description
 				this.room['leader'] = room_data.leader
 				this.room['private'] = room_data.private
 				this.users = response.data.data[1]
-				console.log(room_data)
 			})
 			.catch((error) => {
 				console.log(error)
