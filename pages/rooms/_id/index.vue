@@ -10,6 +10,11 @@
 				<v-list-item-group>
 					<v-list-item>
 						<v-list-item-content>
+							<v-list-item-action-text>{{room.description}}</v-list-item-action-text>
+						</v-list-item-content>
+					</v-list-item>
+					<v-list-item>
+						<v-list-item-content>
 							<v-list-item-action-text>{{room.leader}}</v-list-item-action-text>
 						</v-list-item-content>
 					</v-list-item>
@@ -82,11 +87,6 @@ export default {
 		return{
 			room: {},
 			users: null,
-      items: [
-        { text: 'Real-Time', icon: 'mdi-clock' },
-        { text: 'Audience', icon: 'mdi-account' },
-        { text: 'Conversions', icon: 'mdi-flag' },
-      ],
 		}
 	},
 	mounted(){
