@@ -80,7 +80,7 @@ export default {
 				this.private_data = room_data.private
 			})
 			.catch((error) => {
-				console.log(error)
+				this.$router.push(`/rooms/${this.$route.params.id}`)
 			})
 		},
 		async submit () {

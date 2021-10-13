@@ -122,7 +122,7 @@ export default {
 				this.users = response.data.data[1]
 			})
 			.catch((error) => {
-				console.log(error)
+				this.$router.push('/rooms')
 			})
 		},
 		async deleteRoom(){
@@ -132,7 +132,7 @@ export default {
 					this.$router.push('/rooms')
 				})
 				.catch((error) => {
-					console.log(error)
+					this.$router.push('/rooms')
 				})
 			}else{
 
