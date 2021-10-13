@@ -25,6 +25,22 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+      <v-list v-else>
+        <v-list-item
+          v-for="(item, i) in login_items"
+          :key="i"
+          :to="item.to"
+          router
+          exact
+        >
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.title" />
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="!clipped"
@@ -37,7 +53,7 @@
       <v-btn v-show="isLoggedIn" color="green" @click="handleLogout">ログアウト</v-btn>
     </v-app-bar>
     <v-main>
-      <v-container fluid>
+      <v-container class="main-container" fluid>
         <FlashMessage></FlashMessage>
         <Nuxt />
       </v-container>
@@ -81,6 +97,18 @@ export default {
           to: '/signup'
         }
       ],
+      login_items: [
+        {
+          icon: 'mdi-apps',
+          title: 'トップへ',
+          to: '/rooms'
+        },
+        {
+          icon: 'mdi-chart-bubble',
+          title: '新規ルーム作成',
+          to: '/rooms/new'
+        }
+      ],
       miniVariant: false,
       mobile_breakpoint: 1904,
       title: 'オリジナルアプリ'
@@ -98,3 +126,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .main-container{
+    padding: 0 !important;;
+  }
+</style>

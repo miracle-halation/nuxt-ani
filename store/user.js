@@ -40,7 +40,7 @@ export const actions = {
 				type: "green",
 				status: true
 			}, {root:true})
-			this.$router.push('/')
+			this.$router.go('/rooms')
 		},
 		(error) => {
 			dispatch("flashMessage/showMessage", {
@@ -61,7 +61,7 @@ export const actions = {
 					type: "green",
 					status: true
 				}, {root:true})
-				this.$router.push('/')
+				this.$router.push('/rooms')
 			},
 			(error) => {
 				dispatch("flashMessage/showMessage", {
