@@ -13,7 +13,7 @@
 						<ValidationProvider
 							v-slot="{ errors }"
 							name="居住地域"
-							rules="max:50"
+							rules="required|max:50"
 						>
 							<v-text-field
 								v-model="address"
@@ -21,6 +21,7 @@
 								placeholder="例)日本 東京"
 								:counter="50"
 								:error-messages="errors"
+								required
 							/>
 						</ValidationProvider>
 						<ValidationProvider
@@ -50,13 +51,14 @@
 						<ValidationProvider
 							v-slot="{ errors }"
 							name="自己紹介"
-							rules="max:300"
+							rules="required|max:300"
 						>
 							<v-textarea
-								v-model="my_info"
+								v-model="myinfo"
 								label="自己紹介"
 								:counter="300"
 								:error-messages="errors"
+								required
 							/>
 						</ValidationProvider>
 						<v-card-actions>
@@ -70,14 +72,18 @@
 </template>
 
 <script>
+import {mapGetters, mapActions} from 'vuex'
 export default {
 	asyncData(){
 		return {
 			address: "",
 			tag_name: "",
 			tags: [],
-			my_info: ""
+			myinfo: ""
 		}
+	},
+	computed:{
+		...mapGetters('user', ['user'])
 	},
 	methods:{
 		async submit () {
@@ -93,8 +99,24 @@ export default {
 			this.tags.splice(index, 1)
 		},
 		async UpdateProfile(){
-
-		}
+			const formData = new FormData()
+			formData.append('address', this.address)
+			formData.append('myinfo', this.myinfo)
+			formData.append('tags', this.tags)
+			formData.append('id', this.user.user.id)
+			await this.$axios.patch(`/auth/`, formData)
+			.then((response) => {
+				this.$router.push('/rooms')
+			},
+			(error) => {
+				this.showMessage({
+					message: "作成に失敗しました",
+					type: "red",
+					status: true
+				})
+			})
+		},
+		...mapActions('flashMessage', ['showMessage'])
 	}
 }
 </script>

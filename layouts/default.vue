@@ -120,7 +120,7 @@ export default {
   methods:{
     async handleLogout(){
       await this.logout()
-      this.$router.push('/login')
+      this.$router.go('/login')
     },
     ...mapActions('user', ['logout'])
   }
