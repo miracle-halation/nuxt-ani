@@ -35,12 +35,13 @@ export const actions = {
 			const user = res_data.data.data
 			cookies.set('user', {user}, {maxAge: 86400})
 			commit('setUser', {user})
+			dispatch("tag/loginUserTags", {id: user.id}, {root:true})
 			dispatch("flashMessage/showMessage", {
 				message: "ログインしました",
 				type: "green",
 				status: true
 			}, {root:true})
-			this.$router.go('/rooms')
+			this.$router.push('/rooms')
 		},
 		(error) => {
 			dispatch("flashMessage/showMessage", {
@@ -56,6 +57,7 @@ export const actions = {
 				const user = response.data.data
 				cookies.set('user', {user}, {maxAge: 86400})
 				commit('setUser', {user})
+				dispatch("tag/loginUserTags", {id: user.id}, {root:true})
 				dispatch("flashMessage/showMessage", {
 					message: "新規作成しました",
 					type: "green",
@@ -73,6 +75,7 @@ export const actions = {
 	},
 	async logout({commit, dispatch}){
 		commit('logoutUser')
+		dispatch("tag/logoutUserTags", {root:true})
 		dispatch("flashMessage/showMessage", {
 			message: "ログアウトしました",
 			type: "green",
