@@ -96,6 +96,8 @@ export default {
 					for(let i=0;i<tags.length;i++){
 						this.tags.push(tags[i]['name'])
 					}
+					this.address = this.user.user.address
+					this.myinfo = this.user.user.myinfo
 				},
 				(error) => {
 					console.log(error)
