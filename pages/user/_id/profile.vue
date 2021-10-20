@@ -85,7 +85,22 @@ export default {
 	computed:{
 		...mapGetters('user', ['user'])
 	},
+	mounted(){
+    this.fetchTags()
+  },
 	methods:{
+		async fetchTags(){
+			await this.$axios.get(`/v1/tags/${this.$route.params.id}`)
+				.then((response) => {
+					const tags = response.data.data
+					for(let i=0;i<tags.length;i++){
+						this.tags.push(tags[i]['name'])
+					}
+				},
+				(error) => {
+					console.log(error)
+				})
+		},
 		async submit () {
       this.$refs.observer.validate()
     },
