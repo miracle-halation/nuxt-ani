@@ -134,6 +134,13 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'
 export default {
+	middleware({store, params, redirect}){
+		const user = store.getters['user/user']
+		const auth = store.getters['user/isLoggedIn']
+		if(!auth || user.user.id != params.id){
+			return redirect('/rooms')
+		}
+	},
 	asyncData () {
 		return {
 			tags: [],
