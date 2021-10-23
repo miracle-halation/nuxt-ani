@@ -7,24 +7,28 @@ const cookies = new Cookie()
 
 export const state = () => ({
 	user: null,
-	isLoggedIn: false
+	isLoggedIn: false,
+	icon: null
 })
 
 export const getters = {
 	user: (state) => state.user,
-	isLoggedIn: (state) => state.isLoggedIn
+	isLoggedIn: (state) => state.isLoggedIn,
+	icon: (state) => state.icon
 }
 
 export const mutations = {
-	setUser(state, { user }){
+	setUser(state, { user, icon }){
 		state.user = user
 		state.isLoggedIn = true
+		state.icon = icon
 	},
 	logoutUser(state){
 		state.user = null
 		state.isLoggedIn = false
+		state.icon = null
 		cookies.remove('user')
-	}
+	},
 }
 
 export const actions = {
@@ -33,14 +37,16 @@ export const actions = {
 		.then((response) => {
 			const res_data = response
 			const user = res_data.data.data
+			const icon = res_data.data.icon_path
 			cookies.set('user', {user}, {maxAge: 86400})
-			commit('setUser', {user})
+			cookies.set('icon', icon, {maxAge: 86400})
+			commit('setUser', {user, icon})
 			dispatch("flashMessage/showMessage", {
 				message: "ログインしました",
 				type: "green",
 				status: true
 			}, {root:true})
-			this.$router.go('/rooms')
+			this.$router.push('/rooms')
 		},
 		(error) => {
 			dispatch("flashMessage/showMessage", {
