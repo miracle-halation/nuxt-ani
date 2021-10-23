@@ -50,6 +50,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      <img :src="icon" class="user-image">
       <v-btn v-show="isLoggedIn" color="green" @click="handleLogout">ログアウト</v-btn>
     </v-app-bar>
     <v-main>
@@ -115,7 +116,7 @@ export default {
     }
   },
   computed:{
-    ...mapGetters('user', ['isLoggedIn'])
+    ...mapGetters('user', ['user','isLoggedIn', 'icon'])
 	},
   methods:{
     async handleLogout(){
@@ -130,5 +131,11 @@ export default {
 <style scoped>
   .main-container{
     padding: 0 !important;;
+  }
+  .user-image{
+    border-radius: 50%;
+    width:  50px;
+    height: 50px;
+    margin-right: 2rem;
   }
 </style>
