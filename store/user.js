@@ -60,8 +60,10 @@ export const actions = {
 		await this.$axios.post('/auth', data, config)
 			.then((response) => {
 				const user = response.data.data
+				const icon = response.data.icon_path
 				cookies.set('user', {user}, {maxAge: 86400})
-				commit('setUser', {user})
+				cookies.set('icon', icon, {maxAge: 86400})
+				commit('setUser', {user, icon})
 				dispatch("flashMessage/showMessage", {
 					message: "新規作成しました",
 					type: "green",
