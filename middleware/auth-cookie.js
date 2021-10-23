@@ -6,7 +6,8 @@ export default ({req, store}) => {
 	}
 	const cookies = new Cookie(req.headers.cookie)
 	const user = cookies.get('user')
+	const icon = cookies.get('icon')
 	if(user){
-		store.commit('user/setUser', {user})
+		store.commit('user/setUser', {user, icon})
 	}
 }
