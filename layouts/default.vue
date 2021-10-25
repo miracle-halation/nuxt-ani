@@ -50,10 +50,12 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <nuxt-link :to="`/user/${user.user.id}/profile`">
-        <img v-show="isLoggedIn" :src="icon" class="user-image">
-      </nuxt-link>
-      <v-btn v-show="isLoggedIn" color="green" @click="handleLogout">ログアウト</v-btn>
+      <template v-if="isLoggedIn">
+        <nuxt-link :to="`/user/${user.user.id}/profile`">
+          <img  :src="icon" class="user-image">
+        </nuxt-link>
+        <v-btn color="green" @click="handleLogout">ログアウト</v-btn>
+      </template>
     </v-app-bar>
     <v-main>
       <v-container class="main-container" fluid>
@@ -123,7 +125,7 @@ export default {
   methods:{
     async handleLogout(){
       await this.logout()
-      this.$router.push('/login')
+      this.$router.go('/login')
     },
     ...mapActions('user', ['logout'])
   }

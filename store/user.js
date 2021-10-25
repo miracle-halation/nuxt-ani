@@ -28,6 +28,7 @@ export const mutations = {
 		state.isLoggedIn = false
 		state.icon = null
 		cookies.remove('user')
+		cookies.remove('icon')
 	},
 }
 
@@ -46,7 +47,7 @@ export const actions = {
 				type: "green",
 				status: true
 			}, {root:true})
-			this.$router.push('/rooms')
+			this.$router.go('/rooms')
 		},
 		(error) => {
 			dispatch("flashMessage/showMessage", {
