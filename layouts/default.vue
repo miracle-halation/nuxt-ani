@@ -50,7 +50,9 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <img v-show="isLoggedIn" :src="icon" class="user-image">
+      <nuxt-link :to="`/user/${user.user.id}/profile`">
+        <img v-show="isLoggedIn" :src="icon" class="user-image">
+      </nuxt-link>
       <v-btn v-show="isLoggedIn" color="green" @click="handleLogout">ログアウト</v-btn>
     </v-app-bar>
     <v-main>
