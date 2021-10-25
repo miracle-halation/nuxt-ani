@@ -172,6 +172,10 @@ export default {
 
 <style scoped>
 
+	a{
+		text-decoration: none;
+	}
+
 	.user_info{
 		margin-top: 3rem;
 	}
