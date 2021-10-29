@@ -56,8 +56,9 @@
 								<v-btn
 									dark
 									icon
+									@click="deleteUser()"
 								>
-									<v-icon>mdi-dots-vertical</v-icon>
+									<v-icon>mdi-delete</v-icon>
 								</v-btn>
 							</v-card-title>
 
@@ -166,6 +167,28 @@ export default {
 					console.log(error)
 				})
 		},
+		async deleteUser(){
+			confirm('ユーザーを削除します。本当によろしいですか？')
+			await this.$axios.delete(`/auth`, {data:{id:this.$route.params.id}})
+				.then((response) => {
+					this.showMessage({
+						message: "削除に成功しました",
+						type: "green",
+						status: true
+					})
+					this.logout()
+					this.$router.go('/login')
+				},
+				(error) => {
+					this.showMessage({
+						message: "削除に失敗しました",
+						type: "red",
+						status: true
+					})
+				})
+		},
+		...mapActions('flashMessage', ['showMessage']),
+		...mapActions('user', ['logout'])
 	}
 }
 </script>
