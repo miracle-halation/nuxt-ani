@@ -50,7 +50,12 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <v-btn v-show="isLoggedIn" color="green" @click="handleLogout">ログアウト</v-btn>
+      <template v-if="isLoggedIn">
+        <nuxt-link :to="`/user/${user.user.id}/profile`">
+          <img  :src="icon" class="user-image">
+        </nuxt-link>
+        <v-btn color="green" @click="handleLogout">ログアウト</v-btn>
+      </template>
     </v-app-bar>
     <v-main>
       <v-container class="main-container" fluid>
@@ -115,12 +120,12 @@ export default {
     }
   },
   computed:{
-    ...mapGetters('user', ['isLoggedIn'])
+    ...mapGetters('user', ['user','isLoggedIn', 'icon'])
 	},
   methods:{
     async handleLogout(){
       await this.logout()
-      this.$router.push('/login')
+      this.$router.go('/login')
     },
     ...mapActions('user', ['logout'])
   }
@@ -130,5 +135,11 @@ export default {
 <style scoped>
   .main-container{
     padding: 0 !important;;
+  }
+  .user-image{
+    border-radius: 50%;
+    width:  50px;
+    height: 50px;
+    margin-right: 2rem;
   }
 </style>
