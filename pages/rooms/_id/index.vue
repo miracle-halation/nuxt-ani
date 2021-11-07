@@ -64,6 +64,15 @@
 		</v-card>
 
 		<v-col class="chat-space">
+			<v-col class="test">
+				<img  :src="icon" class="user-image">
+			</v-col>
+			<v-col class="test">
+				<img  :src="icon" class="user-image">
+			</v-col>
+			<v-col class="test">
+				<img  :src="icon" class="user-image">
+			</v-col>
 		</v-col>
 
 		<v-card
@@ -104,7 +113,7 @@ export default {
 		}
 	},
 	computed:{
-		...mapGetters('user', ['user'])
+		...mapGetters('user', ['user', 'icon'])
 	},
 	mounted(){
 		this.fetchRoom()
@@ -160,6 +169,13 @@ h1{
 
 .list-title{
 	margin-left: 10px;
+}
+
+.user-image{
+	border-radius: 50%;
+	width:  50px;
+	height: 50px;
+	margin: 1rem 2rem;
 }
 
 </style>
