@@ -64,14 +64,35 @@
 		</v-card>
 
 		<v-col class="chat-space">
-			<v-col class="test">
+			<v-col class="chat">
 				<img  :src="icon" class="user-image">
+				<div class="balloon6">
+					<div class="chatting">
+						<div class="says">
+							<p>左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし</p>
+						</div>
+					</div>
+				</div>
 			</v-col>
-			<v-col class="test">
+			<v-col class="chat">
 				<img  :src="icon" class="user-image">
+				<div class="balloon6">
+					<div class="chatting">
+						<div class="says">
+							<p>左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし</p>
+						</div>
+					</div>
+				</div>
 			</v-col>
-			<v-col class="test">
+			<v-col class="chat">
 				<img  :src="icon" class="user-image">
+				<div class="balloon6">
+					<div class="chatting">
+						<div class="says">
+							<p>左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし</p>
+						</div>
+					</div>
+				</div>
 			</v-col>
 		</v-col>
 
@@ -160,7 +181,7 @@ h1{
 .chat-space{
 	height: 650px;
 	width: 100%;
-	background: #ffffff;
+	background: #333333;
 }
 
 .mx-auto{
@@ -171,11 +192,52 @@ h1{
 	margin-left: 10px;
 }
 
+.chat{
+	display: flex;
+}
+
 .user-image{
 	border-radius: 50%;
 	width:  50px;
 	height: 50px;
 	margin: 1rem 2rem;
+}
+
+.balloon6 {
+  width: 100%;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+
+.balloon6 .chatting {
+  width: 100%;
+  text-align: left;
+}
+.says {
+  display: inline-block;
+  position: relative;
+  margin: 0 0 0 0.5rem;
+  padding: 10px;
+  max-width: 25％;
+  border-radius: 12px;
+  background: #edf1ee;
+	color: #000000;
+}
+
+.says:after {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  top: 20px;
+  left: -19px;
+  border: 8px solid transparent;
+  border-right: 18px solid #edf1ee;
+  -webkit-transform: rotate(50deg);
+  transform: rotate(35deg);
+}
+.says p {
+  margin: 0;
+  padding: 0;
 }
 
 </style>
