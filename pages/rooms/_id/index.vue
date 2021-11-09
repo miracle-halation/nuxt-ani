@@ -173,10 +173,14 @@ export default {
 			const user_id = this.user.user.id
 			await this.$axios.post(`/v1/rooms/${room_id}/join`, {user_id:user_id})
 			.then((response) => {
-				console.log(response)
+				this.users.push(user.user)
 			})
 			.catch((error) => {
-				console.log(error)
+				this.showMessage({
+					message: "加入処理に失敗しました",
+					type: "red",
+					status: true
+				})
 			})
 		},
 		async departUser(){
@@ -184,12 +188,17 @@ export default {
 			const user_id = this.user.user.id
 			await this.$axios.post(`/v1/rooms/${room_id}/depart`, {user_id: user_id})
 			.then((response) => {
-				console.log(response)
+				this.$router.go('/rooms')
 			})
 			.catch((error) => {
-				console.log(error)
+				this.showMessage({
+					message: "脱退処理に失敗しました",
+					type: "red",
+					status: true
+				})
 			})
-		}
+		},
+		...mapActions('flashMessage', ['showMessage'])
 	}
 }
 </script>
