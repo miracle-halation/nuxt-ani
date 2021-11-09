@@ -28,6 +28,7 @@
 						<v-btn
 							depressed
 							color="primary"
+							@click="joinUser"
 						>
 							加入申請
 						</v-btn>
@@ -55,6 +56,7 @@
 						<v-btn
 							depressed
 							color="error"
+							@click="departUser"
 						>
 							脱退
 						</v-btn>
@@ -164,9 +166,29 @@ export default {
 				.catch((error) => {
 					this.$router.push('/rooms')
 				})
-			}else{
-
 			}
+		},
+		async joinUser(){
+			const room_id = this.room['id']
+			const user_id = this.user.user.id
+			await this.$axios.post(`/v1/rooms/${room_id}/join`, {user_id:user_id})
+			.then((response) => {
+				console.log(response)
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+		},
+		async departUser(){
+			const room_id = this.room['id']
+			const user_id = this.user.user.id
+			await this.$axios.post(`/v1/rooms/${room_id}/depart`, {user_id: user_id})
+			.then((response) => {
+				console.log(response)
+			})
+			.catch((error) => {
+				console.log(error)
+			})
 		}
 	}
 }
