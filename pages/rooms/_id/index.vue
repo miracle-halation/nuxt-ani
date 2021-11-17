@@ -110,6 +110,12 @@
 				</div>
 				<img :src="icon" class="user-image">
 			</v-col>
+			<v-form>
+			<v-text-field
+				v-model="message"
+				label="Message"
+			></v-text-field>
+			</v-form>
 		</v-col>
 
 		<v-card
@@ -147,6 +153,7 @@ export default {
 		return{
 			room: [],
 			users: [],
+			message: null
 		}
 	},
 	computed:{
