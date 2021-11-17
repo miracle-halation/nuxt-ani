@@ -24,7 +24,9 @@
 							<v-list-item-action-text v-else>プライベート</v-list-item-action-text>
 						</v-list-item-content>
 					</v-list-item>
-					<v-list-item>
+					<v-list-item
+						v-if="!this.users.some((ele) => ele.id === this.user.user.id)"
+					>
 						<v-btn
 							depressed
 							color="primary"
@@ -52,7 +54,9 @@
 							ルーム削除
 						</v-btn>
 					</v-list-item>
-					<v-list-item>
+					<v-list-item
+						v-if="this.users.some((ele) => ele.id === this.user.user.id)"
+					>
 						<v-btn
 							depressed
 							color="error"
@@ -125,14 +129,14 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
 
 export default {
 	middleware: 'authenticated',
 	asyncData(){
 		return{
-			room: {},
-			users: null,
+			room: [],
+			users: [],
 		}
 	},
 	computed:{
@@ -169,7 +173,9 @@ export default {
 			}
 		},
 		async joinUser(){
-			const room_id = this.room['id']
+			const result = this.users.some((ele) => ele.id === this.user.user.id)
+			if(!result){
+				const room_id = this.room['id']
 			const user_id = this.user.user.id
 			await this.$axios.post(`/v1/rooms/${room_id}/join`, {user_id:user_id})
 			.then((response) => {
@@ -182,21 +188,37 @@ export default {
 					status: true
 				})
 			})
+			}else{
+				this.showMessage({
+					message: "加入処理に失敗しました",
+					type: "red",
+					status: true
+				})
+			}
 		},
 		async departUser(){
-			const room_id = this.room['id']
-			const user_id = this.user.user.id
-			await this.$axios.post(`/v1/rooms/${room_id}/depart`, {user_id: user_id})
-			.then((response) => {
-				this.$router.go('/rooms')
-			})
-			.catch((error) => {
+			const result = this.users.some((ele) => ele.id === this.user.user.id)
+			if(result){
+				const room_id = this.room['id']
+				const user_id = this.user.user.id
+				await this.$axios.post(`/v1/rooms/${room_id}/depart`, {user_id: user_id})
+				.then((response) => {
+					this.$router.go('/rooms')
+				})
+				.catch((error) => {
+					this.showMessage({
+						message: "脱退処理に失敗しました",
+						type: "red",
+						status: true
+					})
+				})
+			}else{
 				this.showMessage({
 					message: "脱退処理に失敗しました",
 					type: "red",
 					status: true
 				})
-			})
+			}
 		},
 		...mapActions('flashMessage', ['showMessage'])
 	}
