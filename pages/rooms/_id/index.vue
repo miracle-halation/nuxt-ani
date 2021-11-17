@@ -179,7 +179,7 @@ export default {
 			const user_id = this.user.user.id
 			await this.$axios.post(`/v1/rooms/${room_id}/join`, {user_id:user_id})
 			.then((response) => {
-				this.users.push(user.user)
+				this.$router.go(`/rooms/${room_id}`)
 			})
 			.catch((error) => {
 				this.showMessage({
