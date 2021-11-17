@@ -100,6 +100,16 @@
 					</div>
 				</div>
 			</v-col>
+			<v-col class="chat">
+				<div class="balloon6">
+					<div class="chatting">
+						<div class="mycomment">
+							<p>左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし</p>
+						</div>
+					</div>
+				</div>
+				<img :src="icon" class="user-image">
+			</v-col>
 		</v-col>
 
 		<v-card
@@ -292,5 +302,31 @@ h1{
   margin: 0;
   padding: 0;
 }
+
+.mycomment {
+  margin: 10px 0;
+}
+.mycomment p {
+  display: inline-block;
+  position: relative;
+  margin: 0 10px 0 0;
+  padding: 8px;
+  max-width: 25％;
+  border-radius: 12px;
+  background: #30e852;
+  font-size: 15px;
+}
+
+.mycomment p:after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  right: -19px;
+  border: 8px solid transparent;
+  border-left: 18px solid #30e852;
+  -webkit-transform: rotate(-35deg);
+  transform: rotate(-35deg);
+}
+
 
 </style>
