@@ -69,47 +69,38 @@
 			</v-list>
 		</v-card>
 
-		<v-col class="chat-space">
-			<v-col class="chat">
-				<img  :src="icon" class="user-image">
-				<div class="balloon6">
-					<div class="chatting">
-						<div class="says">
-							<p>左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし</p>
+		<v-col
+			class="chat-space"
+		>
+			<div
+				v-for="(chat, index) in this.messages"
+				:key="index"
+			>
+				<v-col class="chat"
+					v-if="`${chat.user_id}` === `${user.user.id}`"
+				>
+					<div class="my-balloon6">
+						<div class="chatting">
+							<div class="mycomment">
+								<p>{{chat.content}}</p>
+							</div>
 						</div>
 					</div>
-				</div>
-			</v-col>
-			<v-col class="chat">
-				<img  :src="icon" class="user-image">
-				<div class="balloon6">
-					<div class="chatting">
-						<div class="says">
-							<p>左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし</p>
+					<img :src="icon" class="user-image">
+				</v-col>
+				<v-col class="chat"
+					v-else
+				>
+					<img :src="icon" class="user-image">
+					<div class="balloon6">
+						<div class="chatting">
+							<div class="says">
+								<p>{{chat.content}}</p>
+							</div>
 						</div>
 					</div>
-				</div>
-			</v-col>
-			<v-col class="chat">
-				<img  :src="icon" class="user-image">
-				<div class="balloon6">
-					<div class="chatting">
-						<div class="says">
-							<p>左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし</p>
-						</div>
-					</div>
-				</div>
-			</v-col>
-			<v-col class="chat">
-				<div class="balloon6">
-					<div class="chatting">
-						<div class="mycomment">
-							<p>左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし文左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし左ふきだし</p>
-						</div>
-					</div>
-				</div>
-				<img :src="icon" class="user-image">
-			</v-col>
+				</v-col>
+			</div>
 			<v-form class="message_field">
 				<v-text-field
 					v-model="message"
@@ -175,6 +166,7 @@ export default {
 				this.room['leader'] = room_data.leader
 				this.room['private'] = room_data.private
 				this.users = response.data.data[1]
+				this.messages = response.data.data[2]
 			})
 			.catch((error) => {
 				this.$router.push('/rooms')
@@ -284,6 +276,7 @@ h1{
 
 .chat{
 	display: flex;
+	align-items:center;
 }
 
 .user-image{
@@ -293,7 +286,7 @@ h1{
 	margin: 1rem 2rem;
 }
 
-.balloon6 {
+.balloon6 .my-balloon6 {
   width: 100%;
   margin: 1rem 0;
   overflow: hidden;
@@ -303,6 +296,12 @@ h1{
   width: 100%;
   text-align: left;
 }
+
+.my-balloon6{
+	width: 100%;
+  text-align: right;
+}
+
 .says {
   display: inline-block;
   position: relative;
@@ -318,7 +317,7 @@ h1{
   content: "";
   display: inline-block;
   position: absolute;
-  top: 20px;
+  top: 15px;
   left: -19px;
   border: 8px solid transparent;
   border-right: 18px solid #edf1ee;
@@ -347,7 +346,7 @@ h1{
 .mycomment p:after {
   content: "";
   position: absolute;
-  top: 3px;
+  top: 9px;
   right: -19px;
   border: 8px solid transparent;
   border-left: 18px solid #30e852;
