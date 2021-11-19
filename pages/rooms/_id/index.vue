@@ -110,7 +110,7 @@
 				</div>
 				<img :src="icon" class="user-image">
 			</v-col>
-			<v-form>
+			<v-form class="message_field">
 				<v-text-field
 					v-model="message"
 					label="Message"
@@ -355,5 +355,10 @@ h1{
   transform: rotate(-35deg);
 }
 
+.message_field{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
 
 </style>
