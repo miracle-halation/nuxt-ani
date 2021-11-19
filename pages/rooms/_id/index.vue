@@ -264,6 +264,13 @@ h1{
 	height: 650px;
 	width: 100%;
 	background: #333333;
+	overflow: scroll;
+	-ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.chat-space::-webkit-scrollbar {
+    display:none;
 }
 
 .mx-auto{
