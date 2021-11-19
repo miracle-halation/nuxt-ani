@@ -111,10 +111,11 @@
 				<img :src="icon" class="user-image">
 			</v-col>
 			<v-form>
-			<v-text-field
-				v-model="message"
-				label="Message"
-			></v-text-field>
+				<v-text-field
+					v-model="message"
+					label="Message"
+				></v-text-field>
+				<v-btn @click="createMessage">投稿</v-btn>
 			</v-form>
 		</v-col>
 
@@ -153,6 +154,7 @@ export default {
 		return{
 			room: [],
 			users: [],
+			messages: [],
 			message: null
 		}
 	},
@@ -193,18 +195,18 @@ export default {
 			const result = this.users.some((ele) => ele.id === this.user.user.id)
 			if(!result){
 				const room_id = this.room['id']
-			const user_id = this.user.user.id
-			await this.$axios.post(`/v1/rooms/${room_id}/join`, {user_id:user_id})
-			.then((response) => {
-				this.$router.go(`/rooms/${room_id}`)
-			})
-			.catch((error) => {
-				this.showMessage({
-					message: "加入処理に失敗しました",
-					type: "red",
-					status: true
+				const user_id = this.user.user.id
+				await this.$axios.post(`/v1/rooms/${room_id}/join`, {user_id:user_id})
+				.then((response) => {
+					this.$router.go(`/rooms/${room_id}`)
 				})
-			})
+				.catch((error) => {
+					this.showMessage({
+						message: "加入処理に失敗しました",
+						type: "red",
+						status: true
+					})
+				})
 			}else{
 				this.showMessage({
 					message: "加入処理に失敗しました",
@@ -236,6 +238,24 @@ export default {
 					status: true
 				})
 			}
+		},
+		async createMessage(){
+			const formData = new FormData()
+			formData.append('message[content]', this.message)
+			formData.append('message[user_id]', this.user.user.id)
+			formData.append('message[room_id]', this.room.id)
+			await this.$axios.post(`/v1/messages`, formData)
+			.then((response) => {
+				this.messages.push(response.data.data)
+				this.message = null
+			})
+			.catch((error) => {
+				this.showMessage({
+						message: "メッセージの作成に失敗しました",
+						type: "red",
+						status: true
+					})
+			})
 		},
 		...mapActions('flashMessage', ['showMessage'])
 	}
