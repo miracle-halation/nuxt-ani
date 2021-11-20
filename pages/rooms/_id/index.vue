@@ -261,7 +261,7 @@ h1{
 }
 
 .chat-space{
-	height: 650px;
+	height: 100vh;
 	width: 100%;
 	background: #333333;
 	overflow: scroll;
