@@ -138,6 +138,7 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
+import ActionCable from 'actioncable';
 
 export default {
 	middleware: 'authenticated',
@@ -151,6 +152,16 @@ export default {
 	},
 	computed:{
 		...mapGetters('user', ['user', 'icon'])
+	},
+	created(){
+		if (process.browser){
+			const cable = ActionCable.createConsumer('ws://localhost:8000/cable');
+			this.messageChannel = cable.subscriptions.create( "RoomChannel",{
+				received: (data) => {
+					this.messages.push(data.message.message)
+				}
+			})
+		}
 	},
 	mounted(){
 		this.fetchRoom()
@@ -238,7 +249,9 @@ export default {
 			formData.append('message[room_id]', this.room.id)
 			await this.$axios.post(`/v1/messages`, formData)
 			.then((response) => {
-				this.messages.push(response.data.data)
+				this.messageChannel.perform('speak',{
+					message: response.data.data
+				})
 				this.message = null
 			})
 			.catch((error) => {
