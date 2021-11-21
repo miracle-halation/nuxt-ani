@@ -87,14 +87,17 @@
 						</div>
 					</div>
 					<div class="user_info">
-						<img :src="icon" class="user-image">
+						<img :src="`${chat.icon_path}`" class="user-image">
 						<p>{{user.user.nickname}}</p>
 					</div>
 				</v-col>
 				<v-col class="chat"
 					v-else
 				>
-					<img :src="icon" class="user-image">
+					<div class="user_info">
+						<img :src="`${chat.icon_path}`" class="user-image">
+						<p>{{user.user.nickname}}</p>
+					</div>
 					<div class="balloon6">
 						<div class="chatting">
 							<div class="says">
