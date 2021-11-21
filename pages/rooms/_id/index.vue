@@ -86,7 +86,10 @@
 							</div>
 						</div>
 					</div>
-					<img :src="icon" class="user-image">
+					<div class="user_info">
+						<img :src="icon" class="user-image">
+						<p>{{user.user.nickname}}</p>
+					</div>
 				</v-col>
 				<v-col class="chat"
 					v-else
@@ -378,6 +381,14 @@ h1{
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+
+.user_info{
+	text-align: center;
+}
+
+.user_info img{
+	margin-bottom: 0;
 }
 
 </style>
