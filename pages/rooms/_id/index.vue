@@ -215,7 +215,6 @@
 
 <script>
 import {mapGetters, mapActions} from 'vuex'
-import ActionCable from 'actioncable';
 
 export default {
 	middleware: 'authenticated',
@@ -235,7 +234,8 @@ export default {
 		...mapGetters('user', ['user', 'icon'])
 	},
 	created(){
-		if (process.browser){
+		if (process.client) {
+			const ActionCable = require('actioncable')
 			const cable = ActionCable.createConsumer('ws://localhost:8000/cable');
 			this.messageChannel = cable.subscriptions.create( "RoomChannel",{
 				received: (data) => {
