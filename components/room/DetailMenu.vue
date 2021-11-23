@@ -148,10 +148,6 @@ h1{
 	margin-bottom: 1rem;
 }
 
-.mx-auto{
-	width: 100%;
-}
-
 .list-title{
 	margin-left: 10px;
 }

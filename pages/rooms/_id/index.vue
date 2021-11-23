@@ -328,10 +328,6 @@ export default {
 
 <style scoped>
 
-h1{
-	margin-bottom: 1rem;
-}
-
 .chat-space{
 	height: 100vh;
 	width: 100%;
