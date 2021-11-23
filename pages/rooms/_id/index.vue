@@ -1,70 +1,18 @@
 <template>
 	<v-row no-gutters justify="space-between">
-		<v-card
-			class="mx-auto"
-			max-width="300"
-			tile
-		>
-			<v-list dense >
-				<v-list-item-title class="list-title">{{room.name}}</v-list-item-title>
-				<v-list-item-group>
-					<v-list-item>
-						<v-list-item-content>
-							<v-list-item-action-text>{{room.description}}</v-list-item-action-text>
-						</v-list-item-content>
-					</v-list-item>
-					<v-list-item>
-						<v-list-item-content>
-							<v-list-item-action-text>{{room.leader}}</v-list-item-action-text>
-						</v-list-item-content>
-					</v-list-item>
-					<v-list-item>
-						<v-list-item-content>
-							<v-list-item-action-text v-if="`${room.private}`">パブリック</v-list-item-action-text>
-							<v-list-item-action-text v-else>プライベート</v-list-item-action-text>
-						</v-list-item-content>
-					</v-list-item>
-					<v-list-item>
-						<v-btn
-							depressed
-							color="primary"
-						>
-							加入申請
-						</v-btn>
-					</v-list-item>
-					<v-list-item v-if="`${user.user.nickname}` === `${room.leader}`">
-						<nuxt-link :to="room.id + '/edit'">
-						<v-btn
-							depressed
-							color="success"
-						>
-							編集
-						</v-btn>
-						</nuxt-link>
-					</v-list-item>
-					<v-list-item v-if="`${user.user.nickname}` === `${room.leader}`">
-						<v-btn
-							depressed
-							color="error"
-							@click="deleteRoom"
-						>
-							ルーム削除
-						</v-btn>
-					</v-list-item>
-					<v-list-item>
-						<v-btn
-							depressed
-							color="error"
-						>
-							脱退
-						</v-btn>
-					</v-list-item>
-				</v-list-item-group>
-			</v-list>
-		</v-card>
+		<DetailMenu
+			:room="this.room"
+			:users="this.users"
+			:current_user="this.user.user"
+		></DetailMenu>
 
-		<v-col class="chat-space">
-		</v-col>
+		<MessageField
+			:messages="this.messages"
+			:current_user="this.user.user"
+			:room="this.room"
+			:users="this.users"
+			v-model="message"
+		></MessageField>
 
 		<v-card
 			class="mx-auto"
@@ -78,9 +26,6 @@
 						v-for="(user, i) in users"
 						:key="i"
 					>
-						<v-list-item-avatar>
-            	<v-img src="https://picsum.photos/id/11/500/300"></v-img>
-          	</v-list-item-avatar>
 						<v-list-item-content>
 							<v-list-item-action-text v-text="user.nickname"></v-list-item-action-text>
 						</v-list-item-content>
@@ -93,18 +38,26 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapActions} from 'vuex'
+import DetailMenu from '@/components/room/DetailMenu.vue'
+import MessageField from '@/components/room/MessageField.vue'
 
 export default {
 	middleware: 'authenticated',
+	components:{
+		DetailMenu,
+		MessageField
+	},
 	asyncData(){
 		return{
-			room: {},
-			users: null,
+			room: [],
+			users: [],
+			messages: [],
+			message: null
 		}
 	},
 	computed:{
-		...mapGetters('user', ['user'])
+		...mapGetters('user', ['user', 'icon'])
 	},
 	mounted(){
 		this.fetchRoom()
@@ -120,39 +73,22 @@ export default {
 				this.room['leader'] = room_data.leader
 				this.room['private'] = room_data.private
 				this.users = response.data.data[1]
+				this.messages = response.data.data[2]
+				const result = this.users.some((ele) => ele.id === this.user.user.id)
+				if(room_data.private && !result){
+					this.$router.push('/rooms')
+				}
 			})
 			.catch((error) => {
 				this.$router.push('/rooms')
 			})
 		},
-		async deleteRoom(){
-			if(this.user.user.nickname === this.room.leader){
-				await this.$axios.delete(`/v1/rooms/${this.$route.params.id}`)
-				.then((response) => {
-					this.$router.push('/rooms')
-				})
-				.catch((error) => {
-					this.$router.push('/rooms')
-				})
-			}else{
-
-			}
-		}
+		...mapActions('flashMessage', ['showMessage'])
 	}
 }
 </script>
 
 <style scoped>
-
-h1{
-	margin-bottom: 1rem;
-}
-
-.chat-space{
-	height: 650px;
-	width: 100%;
-	background: #ffffff;
-}
 
 .mx-auto{
 	width: 100%;

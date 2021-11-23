@@ -45,7 +45,11 @@
             v-for="room in this.rooms_data"
             :key="room.id"
           >
-            <v-row no-gutters class="test">
+            <v-row
+              no-gutters
+              class="test"
+              v-if="`${room.private}` === 'false'"
+            >
               <nuxt-link :to="`/rooms/${room.id}`">
                 <v-card
                   class="mx-auto"
