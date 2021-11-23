@@ -19,12 +19,12 @@
 				</v-list-item>
 				<v-list-item>
 					<v-list-item-content>
-						<v-list-item-action-text v-if="`${room.private}`">パブリック</v-list-item-action-text>
-						<v-list-item-action-text v-else>プライベート</v-list-item-action-text>
+						<v-list-item-action-text v-if="`${room.private}` === 'true'">プライベート</v-list-item-action-text>
+						<v-list-item-action-text v-else>パブリック</v-list-item-action-text>
 					</v-list-item-content>
 				</v-list-item>
 				<v-list-item
-					v-if="!users.some((ele) => ele.id === current_user.id)"
+					v-if="!users.some((ele) => ele.id === current_user.id) && `${room.private}` === 'false'"
 				>
 					<v-btn
 						depressed
@@ -121,7 +121,7 @@ export default {
 				const user_id = this.current_user.id
 				await this.$axios.post(`/v1/rooms/${room_id}/depart`, {user_id: user_id})
 				.then((response) => {
-					this.$router.go('/rooms')
+					this.$router.push('/rooms')
 				})
 				.catch((error) => {
 					this.showMessage({

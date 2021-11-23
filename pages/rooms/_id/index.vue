@@ -10,6 +10,7 @@
 			:messages="this.messages"
 			:current_user="this.user.user"
 			:room="this.room"
+			:users="this.users"
 			v-model="message"
 		></MessageField>
 
@@ -25,9 +26,6 @@
 						v-for="(user, i) in users"
 						:key="i"
 					>
-						<v-list-item-avatar>
-            	<v-img src="https://picsum.photos/id/11/500/300"></v-img>
-          	</v-list-item-avatar>
 						<v-list-item-content>
 							<v-list-item-action-text v-text="user.nickname"></v-list-item-action-text>
 						</v-list-item-content>
@@ -76,6 +74,10 @@ export default {
 				this.room['private'] = room_data.private
 				this.users = response.data.data[1]
 				this.messages = response.data.data[2]
+				const result = this.users.some((ele) => ele.id === this.user.user.id)
+				if(room_data.private && !result){
+					this.$router.push('/rooms')
+				}
 			})
 			.catch((error) => {
 				this.$router.push('/rooms')

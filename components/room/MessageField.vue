@@ -74,7 +74,8 @@ export default {
 	props:{
 		room: Array,
 		messages: Array,
-		current_user: Object
+		current_user: Object,
+		users: Array
 	},
 	components:{
 		MessageModal
@@ -107,24 +108,33 @@ export default {
 	},
 	methods:{
 		async createMessage(){
-			const formData = new FormData()
-			formData.append('message[content]', this.message)
-			formData.append('message[user_id]', this.current_user.id)
-			formData.append('message[room_id]', this.room.id)
-			await this.$axios.post(`/v1/messages`, formData)
-			.then((response) => {
-				this.messageChannel.perform('speak',{
-					message: response.data.data
+			const result = this.users.some((ele) => ele.id === this.current_user.id)
+			if(result){
+				const formData = new FormData()
+				formData.append('message[content]', this.message)
+				formData.append('message[user_id]', this.current_user.id)
+				formData.append('message[room_id]', this.room.id)
+				await this.$axios.post(`/v1/messages`, formData)
+				.then((response) => {
+					this.messageChannel.perform('speak',{
+						message: response.data.data
+					})
+					this.message = null
 				})
-				this.message = null
-			})
-			.catch((error) => {
-				this.showMessage({
+				.catch((error) => {
+					this.showMessage({
 						message: "メッセージの作成に失敗しました",
 						type: "red",
 						status: true
 					})
-			})
+				})
+			}else{
+				this.showMessage({
+					message: "ルームに所属していないユーザーは投稿できません",
+					type: "red",
+					status: true
+				})
+			}
 		},
 		async deleteMessage(delete_message, index){
 			await this.$axios.delete(`/v1/messages/${delete_message}`)
