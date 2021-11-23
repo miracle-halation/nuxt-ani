@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import {mapGetters, mapActions} from 'vuex'
+import {mapActions} from 'vuex'
 
 export default {
 	props:{
@@ -138,6 +138,7 @@ export default {
 				})
 			}
 		},
+		...mapActions('flashMessage', ['showMessage'])
 	}
 }
 </script>
