@@ -27,7 +27,7 @@
 						:key="i"
 					>
 						<v-list-item-content>
-							<v-list-item-action-text v-text="user.nickname"></v-list-item-action-text>
+							<UserMenu :user="user"></UserMenu>
 						</v-list-item-content>
 					</v-list-item>
 				</v-list-item-group>
@@ -41,12 +41,14 @@
 import {mapGetters, mapActions} from 'vuex'
 import DetailMenu from '@/components/room/DetailMenu.vue'
 import MessageField from '@/components/room/MessageField.vue'
+import UserMenu from '@/components/room/UserMenu.vue'
 
 export default {
 	middleware: 'authenticated',
 	components:{
 		DetailMenu,
-		MessageField
+		MessageField,
+		UserMenu
 	},
 	asyncData(){
 		return{
