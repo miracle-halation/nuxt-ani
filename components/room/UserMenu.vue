@@ -20,7 +20,7 @@
           </h1>
         </v-card-title>
         <v-card-subtitle class="apply">
-          <v-btn color="green" class="friend-apply">
+          <v-btn color="green" class="friend-apply" @click="applyFriend(user.id)">
             フレンド申請
           </v-btn>
         </v-card-subtitle>
@@ -36,18 +36,14 @@
 
         <v-tabs-items v-model="tab">
           <v-tab-item>
-            <v-card
-              flat
-            >
+            <v-card flat>
               <v-card-text>{{user.myinfo}}</v-card-text>
             </v-card>
           </v-tab-item>
 
           <v-tab-item>
-            <v-card
-              flat
-            >
-              <v-card-text>{{ text }}</v-card-text>
+            <v-card flat>
+              <v-card-text></v-card-text>
             </v-card>
           </v-tab-item>
         </v-tabs-items>
@@ -57,20 +53,50 @@
 </template>
 
 <script>
+  import {mapGetters, mapActions} from 'vuex'
+
   export default {
 		props:{
-			user: Array
+			user: Object,
 		},
     data () {
       return {
         dialog: false,
         tab: null,
-        items: [
-          '自己紹介', 'お気に入り'
-        ],
-        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
       }
     },
+    computed:{
+      ...mapGetters("user",{
+        current_user: 'user'
+      })
+    },
+    methods:{
+      async applyFriend(id){
+        await this.$axios.post('/v1/friends/apply', {user_id: this.current_user.user.id, friend_id: id})
+        .then((response) => {
+          const result = response.data
+          if(result.status === 'SUCCESS'){
+            const color = "green"
+          }else if(result.status === 'ERROR'){
+            const color = "red"
+          }
+          this.showMessage({
+						message: result.data,
+						type: result.color,
+						status: true
+					})
+        },
+        (error)=>{
+          this.showMessage({
+						message: "フレンド申請に失敗しました",
+						type: "red",
+						status: true
+					})
+        }
+        )
+      },
+      ...mapActions('flashMessage', ['showMessage']),
+    }
   }
 </script>
 
