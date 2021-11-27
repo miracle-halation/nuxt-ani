@@ -111,17 +111,17 @@
 						</v-list>
 					</v-tab-item>
 					<v-tab-item value="tab-3">
-						<v-list>
+						<v-list v-for="(friend, index) in friends" :key="index">
 							<v-list-item>
 								<v-list-item-action>
-									<v-icon>mdi-phone</v-icon>
+									<img src="https://cdn.vuetifyjs.com/images/cards/cooking.png" class="user-image">
 								</v-list-item-action>
 
 								<v-list-item-content>
-									<v-list-item-title>(650) 555-1234</v-list-item-title>
+									<v-list-item-title>{{friend.nickname}}</v-list-item-title>
 								</v-list-item-content>
 								<v-list-item-action>
-									<v-icon>mdi-message-text</v-icon>
+									<v-btn>承認する</v-btn>
 								</v-list-item-action>
 							</v-list-item>
 						</v-list>
@@ -145,6 +145,7 @@ export default {
 	asyncData () {
 		return {
 			tags: [],
+			friends: null,
 			tab: null
 		}
 	},
@@ -152,7 +153,8 @@ export default {
 		...mapGetters('user', ['user'])
 	},
 	mounted(){
-    this.fetchTags()
+    this.fetchTags(),
+		this.fetchFriends()
   },
 	methods:{
 		async fetchTags(){
@@ -166,6 +168,15 @@ export default {
 				(error) => {
 					console.log(error)
 				})
+		},
+		async fetchFriends(){
+			await this.$axios.get(`/v1/friends/${this.$route.params.id}`)
+			.then((response) => {
+				this.friends = response.data.data
+			},
+			(error) =>{
+				console.log(error)
+			})
 		},
 		async deleteUser(){
 			confirm('ユーザーを削除します。本当によろしいですか？')
@@ -202,5 +213,12 @@ export default {
 	.user_info{
 		margin-top: 3rem;
 	}
+
+  .user-image{
+    border-radius: 50%;
+    width:  50px;
+    height: 50px;
+    margin: 1rem 1rem;
+  }
 
 </style>
