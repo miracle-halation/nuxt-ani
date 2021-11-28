@@ -125,12 +125,15 @@
 								<v-list-item-content>
 									<v-list-item-title>{{friend.nickname}}</v-list-item-title>
 								</v-list-item-content>
+								<v-list-item-action>
+									<v-btn @click="deleteFriend(friend.id, index)">解除する</v-btn>
+								</v-list-item-action>
 							</v-list-item>
 						</v-list>
 					</v-tab-item>
 					<v-tab-item value="tab-4">
 						<v-list v-for="(friend, index) in pending_friends" :key="index">
-							<v-list-item v-if="friend.accept === false">
+							<v-list-item v-if="friend.accept === 0">
 								<v-list-item-action>
 									<img src="https://cdn.vuetifyjs.com/images/cards/cooking.png" class="user-image">
 								</v-list-item-action>
@@ -139,7 +142,10 @@
 									<v-list-item-title>{{friend.nickname}}</v-list-item-title>
 								</v-list-item-content>
 								<v-list-item-action>
-									<v-btn @click="approvalUser(friend.id)">承認する</v-btn>
+									<v-btn @click="approvalUser(friend.id, index)">承認する</v-btn>
+								</v-list-item-action>
+								<v-list-item-action>
+									<v-btn @click="deleteFriend(friend.id, index)">拒否する</v-btn>
 								</v-list-item-action>
 							</v-list-item>
 						</v-list>
@@ -163,7 +169,7 @@ export default {
 	asyncData () {
 		return {
 			tags: [],
-			friends: null,
+			friends: [],
 			pending_friends: null,
 			tab: null
 		}
@@ -218,9 +224,11 @@ export default {
 				})
 			})
 		},
-		async approvalUser(id){
+		async approvalUser(id, index){
 			await this.$axios.post('/v1/friends/approval', {user_id: this.user.user.id, friend_id: id})
 			.then((response) => {
+				this.friends.push(this.pending_friends[index])
+				this.pending_friends.splice(index, 1)
 				const result = response.data
 				this.showMessage({
 					message: result.data,
@@ -231,6 +239,25 @@ export default {
 			(error) => {
 				this.showMessage({
 					message: "申請に失敗しました",
+					type: "red",
+					status: true
+				})
+			})
+		},
+		async deleteFriend(id, index){
+			await this.$axios.delete(`/v1/friends/${this.$route.params.id}`, {data:{friend_id: id}})
+			.then((response) => {
+				this.friends.splice(index, 1)
+				const result = response.data
+				this.showMessage({
+					message: result.data,
+					type: result.color,
+					status: true
+				})
+			},
+			(error) => {
+				this.showMessage({
+					message: "解除に失敗しました",
 					type: "red",
 					status: true
 				})
