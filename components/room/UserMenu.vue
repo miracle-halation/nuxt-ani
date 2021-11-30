@@ -19,7 +19,9 @@
             {{user.nickname}}
           </h1>
         </v-card-title>
-        <v-card-subtitle class="apply">
+        <v-card-subtitle class="apply" v-if="this.friends.includes(user.nickname) || user.nickname === this.current_user.user.nickname">
+        </v-card-subtitle>
+        <v-card-subtitle class="apply" v-else>
           <v-btn color="green" class="friend-apply" @click="applyFriend(user.id)">
             フレンド申請
           </v-btn>
@@ -41,9 +43,9 @@
             </v-card>
           </v-tab-item>
 
-          <v-tab-item>
+          <v-tab-item v-for="(tag, index) in tags" :key="index">
             <v-card flat>
-              <v-card-text></v-card-text>
+              <v-card-text>{{tag}}</v-card-text>
             </v-card>
           </v-tab-item>
         </v-tabs-items>
@@ -57,12 +59,14 @@
 
   export default {
 		props:{
-			user: Object,
+			user: Object
 		},
     data () {
       return {
         dialog: false,
+        tags: [],
         tab: null,
+        friends: []
       }
     },
     computed:{
@@ -70,16 +74,40 @@
         current_user: 'user'
       })
     },
+    mounted(){
+    this.fetchTags(),
+    this.fetchFriends()
+  },
     methods:{
+      async fetchTags(){
+        await this.$axios.get(`/v1/tags/${this.user.id}`)
+          .then((response) => {
+            const tags = response.data.data
+            for(let i=0;i<tags.length;i++){
+              this.tags.push(tags[i]['name'])
+            }
+          },
+          (error) => {
+            console.log(error)
+          })
+		  },
+      async fetchFriends(){
+        await this.$axios.get(`/v1/friends/${this.current_user.user.id}`)
+        .then((response) => {
+          const user_datas = response.data.data[0]
+          for(let i=0;i<user_datas.length;i++){
+            this.friends.push(user_datas[i]['nickname'])
+          }
+          console.log(this.friends.includes("sss"))
+        },
+        (error) => {
+          console.log(error)
+        })
+      },
       async applyFriend(id){
         await this.$axios.post('/v1/friends/apply', {user_id: this.current_user.user.id, friend_id: id})
         .then((response) => {
           const result = response.data
-          if(result.status === 'SUCCESS'){
-            const color = "green"
-          }else if(result.status === 'ERROR'){
-            const color = "red"
-          }
           this.showMessage({
 						message: result.data,
 						type: result.color,
