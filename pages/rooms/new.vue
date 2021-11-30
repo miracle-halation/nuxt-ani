@@ -99,12 +99,13 @@ export default {
 	},
 	methods:{
 		async fetchUsers(){
-			await this.$axios.get(`/v1/rooms/new`)
+			await this.$axios.get(`/v1/friends/${this.user.user.id}`)
 			.then((response) => {
-				const user_datas = response.data.data
+				const user_datas = response.data.data[0]
 				for(let i=0;i<user_datas.length;i++){
 					this.src_users.push(user_datas[i]['nickname'])
 				}
+				console.log(this.src_users);
 			},
 			(error) => {
 				console.log(error)
@@ -114,8 +115,15 @@ export default {
       this.$refs.observer.validate()
     },
 		async AddUsers(){
-			if(this.user_name !== ""){
+			if(this.user_name !== "" && this.src_users.includes(this.user_name)){
 				this.users.push(this.user_name)
+				this.user_name = ""
+			}else{
+				this.showMessage({
+					message: "フレンド以外のユーザーは登録できません",
+					type: "red",
+					status: true
+				})
 				this.user_name = ""
 			}
 		},
