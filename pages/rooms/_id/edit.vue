@@ -22,6 +22,12 @@
 								required
 							/>
 						</ValidationProvider>
+						<v-select
+							v-model="genre"
+							:items="items"
+							:menu-props="{ top: true, offsetY: true }"
+							label="ジャンル"
+						></v-select>
 						<v-file-input v-model="image" @change="setImage" label="画像" />
 						<v-checkbox
 							v-model="private_data"
@@ -60,6 +66,8 @@ export default {
 		return{
 			name:"",
 			description: "",
+			genre: null,
+			items: ['アニメ', '漫画', 'ゲーム', '動物', 'スポーツ'],
 			private_data: false,
 			image: null
 		}
@@ -92,6 +100,7 @@ export default {
 		async updateRoom(){
 			const formData = new FormData()
 			formData.append('room[name]', this.name)
+			formData.append('room[genre]', this.genre)
 			formData.append('room[description]', this.description)
 			formData.append('room[private]', this.private_data)
 			formData.append('room[leader]', this.user.user.nickname)
