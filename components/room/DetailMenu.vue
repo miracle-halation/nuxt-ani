@@ -9,6 +9,11 @@
 			<v-list-item-group>
 				<v-list-item>
 					<v-list-item-content>
+						<v-list-item-action-text>{{room.genre}}</v-list-item-action-text>
+					</v-list-item-content>
+				</v-list-item>
+				<v-list-item>
+					<v-list-item-content>
 						<v-list-item-action-text>{{room.description}}</v-list-item-action-text>
 					</v-list-item-content>
 				</v-list-item>

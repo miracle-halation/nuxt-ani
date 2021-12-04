@@ -71,6 +71,7 @@ export default {
 				const room_data = response.data.data[0]
 				this.room['id'] = room_data.id
 				this.room['name'] = room_data.name
+				this.room['genre'] = room_data.genre
 				this.room['description'] = room_data.description
 				this.room['leader'] = room_data.leader
 				this.room['private'] = room_data.private
