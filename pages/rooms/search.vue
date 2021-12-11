@@ -13,8 +13,8 @@
             </v-icon>
           </template>
         </v-text-field>
-        <v-btn>
-          <nuxt-link to="/rooms/search?query=${search}">検索</nuxt-link>
+        <v-btn @click="reSearchRooms">
+          検索
         </v-btn>
       </v-container>
     </v-form>
@@ -63,7 +63,16 @@ export default {
 			this.$axios.post(`/v1/rooms/search`,{data: this.$route.query.query})
 			.then((response) => {
 				this.rooms = response.data.data
-        console.log(this.rooms);
+			})
+			.catch((error) => {
+				console.log(error)
+			})
+		},
+    reSearchRooms(){
+			this.$axios.post(`/v1/rooms/search`,{data: this.search})
+			.then((response) => {
+        this.rooms = null
+				this.rooms = response.data.data
 			})
 			.catch((error) => {
 				console.log(error)
