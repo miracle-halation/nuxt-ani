@@ -70,7 +70,7 @@
                   max-width="340"
                 >
                   <v-img
-                    src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                    :src="`${room.image_path}`"
                     height="200px"
                   ></v-img>
                   <v-card-title>
