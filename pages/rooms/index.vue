@@ -1,8 +1,22 @@
 <template>
   <div>
     <v-container>
+      <v-form>
+        <v-container>
+          <v-text-field v-model="search">
+            <template v-slot:label>
+                ルームを検索する<v-icon style="vertical-align: middle">
+                mdi-file-find
+              </v-icon>
+            </template>
+          </v-text-field>
+          <v-btn>
+            <nuxt-link :to="`/rooms/search?query=${search}`">検索</nuxt-link>
+          </v-btn>
+        </v-container>
+      </v-form>
       <!-- 自分の所属するルームを表示or傾向によるおすすめ表示 -->
-      <v-row><h1>おすすめグループ</h1></v-row>
+      <v-row><h1>人気のルーム</h1></v-row>
         <v-slide-group
           v-model="model"
           class="pa-4"
@@ -102,7 +116,8 @@ export default {
 	asyncData(){
 		return{
       model: null,
-      rooms_data: null
+      rooms_data: null,
+      search: null
 		}
 	},
   mounted(){
