@@ -48,7 +48,7 @@
 						></v-textarea>
 						</ValidationProvider>
 						<v-card-actions>
-							<v-btn :disabled="invalid" 	@click="updateRoom">新規作成</v-btn>
+							<v-btn :disabled="invalid" 	@click="updateRoom">編集</v-btn>
 						</v-card-actions>
 					</v-form>
 				</ValidationObserver>
@@ -86,6 +86,7 @@ export default {
 				this.name = room_data.name
 				this.description = room_data.description
 				this.private_data = room_data.private
+				this.genre = room_data.genre
 			})
 			.catch((error) => {
 				this.$router.push(`/rooms/${this.$route.params.id}`)

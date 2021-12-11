@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import is_login from '~/middleware/is_login'
 export default {
 	asyncData(){
 		return{
