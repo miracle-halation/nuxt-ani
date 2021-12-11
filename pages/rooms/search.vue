@@ -4,21 +4,24 @@
     fluid
     style="min-height: 434px"
   >
-    <v-form>
-      <v-container>
-        <v-text-field v-model="search">
-          <template v-slot:label>
-              ルームを検索する<v-icon style="vertical-align: middle">
-              mdi-file-find
-            </v-icon>
-          </template>
-        </v-text-field>
-        <v-btn @click="reSearchRooms">
-          検索
-        </v-btn>
-      </v-container>
-    </v-form>
-    <h1>検索結果</h1>
+    <v-row>
+      <v-col md="12">
+        <v-form>
+          <v-container>
+            <v-text-field v-model="search">
+              <template v-slot:label>
+                  ルームを検索する<v-icon style="vertical-align: middle">
+                  mdi-file-find
+                </v-icon>
+              </template>
+            </v-text-field>
+            <v-btn @click="reSearchRooms">
+              検索
+            </v-btn>
+          </v-container>
+        </v-form>
+      </v-col>
+    </v-row>
       <v-row>
         <v-col
           v-for="room in this.rooms"
