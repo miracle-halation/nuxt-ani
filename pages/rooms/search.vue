@@ -32,7 +32,7 @@
           <nuxt-link :to="`/rooms/${room.id}`">
             <v-card>
               <v-img
-                src="https://picsum.photos/350/165?random"
+                :src="`${room.image_path}`"
                 max-height="125"
                 class="grey darken-4"
               ></v-img>

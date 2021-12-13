@@ -1,6 +1,6 @@
 <template>
   <v-row justify="center">
-    <img src="https://cdn.vuetifyjs.com/images/cards/cooking.png" class="user-image" @click.stop="dialog = true">
+    <img :src="`${user.icon_path}`" class="user-image" @click.stop="dialog = true">
     <v-list-item-content
       class="user-list"
       @click.stop="dialog = true"
@@ -14,7 +14,7 @@
     >
       <v-card>
         <v-card-title class="text-center justify-center py-6">
-          <img src="https://cdn.vuetifyjs.com/images/cards/cooking.png" class="user-image">
+          <img :src="`${user.icon_path}`" class="user-image">
           <h1 class="font-weight-bold text-h2 basil--text">
             {{user.nickname}}
           </h1>

@@ -7,7 +7,7 @@
 			class="user_info"
     >
 			<v-img
-				src="https://picsum.photos/700?image=996"
+				:src="`${user.user.icon_path}`"
 				height="200px"
 			></v-img>
 			<v-card>
@@ -119,7 +119,7 @@
 						<v-list v-for="(friend, index) in friends" :key="index">
 							<v-list-item v-if="friend.accept">
 								<v-list-item-action>
-									<img src="https://cdn.vuetifyjs.com/images/cards/cooking.png" class="user-image">
+									<img :src="`${friend.icon_path}`" class="user-image">
 								</v-list-item-action>
 
 								<v-list-item-content>
@@ -135,7 +135,7 @@
 						<v-list v-for="(friend, index) in pending_friends" :key="index">
 							<v-list-item v-if="friend.accept === 0">
 								<v-list-item-action>
-									<img src="https://cdn.vuetifyjs.com/images/cards/cooking.png" class="user-image">
+									<img :src="`${friend.icon_path}`"  class="user-image">
 								</v-list-item-action>
 
 								<v-list-item-content>
