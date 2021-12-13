@@ -24,25 +24,31 @@
           show-arrows
         >
           <v-slide-item
-            v-for="n in 12"
-            :key="n"
+            v-for="room in this.favorite_rooms"
+            :key="room.id"
           >
-            <v-row no-gutters class="test">
-              <v-card
-                class="mx-auto"
-                max-width="340"
-              >
-                <v-img
-                  src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-                  height="200px"
-                ></v-img>
-                <v-card-title>
-                  Top western road trips
-                </v-card-title>
-                <v-card-subtitle>
-                  1,000 miles of wonder
-                </v-card-subtitle>
-              </v-card>
+            <v-row
+              no-gutters
+              class="test"
+              v-if="`${room.private}` === 'false'"
+            >
+              <nuxt-link :to="`/rooms/${room.id}`">
+                <v-card
+                  class="mx-auto"
+                  max-width="340"
+                >
+                  <v-img
+                    :src="`${room.image_path}`"
+                    height="200px"
+                  ></v-img>
+                  <v-card-title>
+                    {{room.name}}
+                  </v-card-title>
+                  <v-card-subtitle>
+                    {{room.description}}
+                  </v-card-subtitle>
+                </v-card>
+              </nuxt-link>
             </v-row>
           </v-slide-item>
         </v-slide-group>
@@ -117,6 +123,7 @@ export default {
 		return{
       model: null,
       rooms_data: null,
+      favorite_rooms: null,
       search: null
 		}
 	},
@@ -127,7 +134,8 @@ export default {
     fetchRooms(){
       this.$axios.get('v1/rooms')
       .then((response) => {
-        this.rooms_data = response.data.data
+        this.rooms_data = response.data.data[0]
+        this.favorite_rooms = response.data.data[1]
       })
       .catch((error) => {
         console.log(error)

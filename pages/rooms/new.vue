@@ -144,7 +144,7 @@ export default {
 		},
 		async createRoom(){
 			const formData = new FormData()
-			this.users.push(this.user.user.nickname)
+			this.users.push(this.user.user.id)
 			formData.append('room[name]', this.name)
 			formData.append('room[genre]', this.genre)
 			formData.append('room[description]', this.description)
