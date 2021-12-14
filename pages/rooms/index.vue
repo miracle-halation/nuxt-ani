@@ -94,22 +94,21 @@
         <!-- ここにワンクリック検索用の画像をはる -->
       <v-row><h1>ジャンル</h1></v-row>
       <v-row no-gutters >
-        <v-card
-          v-for="n in 9"
-          :key="n"
-          class="mx-auto"
-          max-width="300"
-        >
-          <v-img
-            src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-            height="200px"
-          ></v-img>
-          <v-card-title>
-            Top western road trips
-          </v-card-title>
-          <v-card-subtitle>
-            1,000 miles of wonder
-          </v-card-subtitle>
+          <v-card
+            v-for="(genre, index) in genres"
+            :key="index"
+            class="mx-auto"
+            max-width="300"
+          >
+            <nuxt-link :to="`/rooms/search?query=${genre}`">
+              <v-img
+                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                height="200px"
+              ></v-img>
+              <v-card-title>
+                {{genre}}
+              </v-card-title>
+            </nuxt-link>
         </v-card>
       </v-row>
     </v-container>
@@ -124,7 +123,18 @@ export default {
       model: null,
       rooms_data: null,
       favorite_rooms: null,
-      search: null
+      search: null,
+      genres: [
+        'ゲーム',
+        'アニメ',
+        '漫画',
+        'カメラ',
+        'スポーツ',
+        '旅',
+        'プラモデル',
+        '小説',
+        'イラスト'
+      ]
 		}
 	},
   mounted(){
@@ -149,6 +159,11 @@ export default {
 
 h1{
   margin: 2rem auto;
+}
+
+a{
+  text-decoration: none;
+  color: #ffffff;
 }
 
 .mx-auto{

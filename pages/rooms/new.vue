@@ -93,7 +93,7 @@ export default {
 			private_data: false,
 			image: null,
 			genre: null,
-			items: ['アニメ', '漫画', 'ゲーム', '動物', 'スポーツ'],
+			items: ['アニメ', '漫画', 'ゲーム', 'カメラ', 'スポーツ', '旅', 'プラモデル', '小説', 'イラスト'],
 			user_name: null,
 			users:[],
 			src_users:[]
