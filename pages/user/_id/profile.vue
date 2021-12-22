@@ -7,7 +7,7 @@
 			class="user_info"
     >
 			<v-img
-				src="https://picsum.photos/700?image=996"
+				:src="`${user.user.icon_path}`"
 				height="200px"
 			></v-img>
 			<v-card>
@@ -26,12 +26,17 @@
 					</v-tab>
 
 					<v-tab href="#tab-2">
-						Favorites Rooms
+						Favorites
 						<v-icon>mdi-heart</v-icon>
 					</v-tab>
 
 					<v-tab href="#tab-3">
 						Friends
+						<v-icon>mdi-account-box</v-icon>
+					</v-tab>
+
+					<v-tab href="#tab-4">
+						Approval pending
 						<v-icon>mdi-account-box</v-icon>
 					</v-tab>
 				</v-tabs>
@@ -111,17 +116,36 @@
 						</v-list>
 					</v-tab-item>
 					<v-tab-item value="tab-3">
-						<v-list>
-							<v-list-item>
+						<v-list v-for="(friend, index) in friends" :key="index">
+							<v-list-item v-if="friend.accept">
 								<v-list-item-action>
-									<v-icon>mdi-phone</v-icon>
+									<img :src="`${friend.icon_path}`" class="user-image">
 								</v-list-item-action>
 
 								<v-list-item-content>
-									<v-list-item-title>(650) 555-1234</v-list-item-title>
+									<v-list-item-title>{{friend.nickname}}</v-list-item-title>
 								</v-list-item-content>
 								<v-list-item-action>
-									<v-icon>mdi-message-text</v-icon>
+									<v-btn @click="deleteFriend(friend.id, index)">解除する</v-btn>
+								</v-list-item-action>
+							</v-list-item>
+						</v-list>
+					</v-tab-item>
+					<v-tab-item value="tab-4">
+						<v-list v-for="(friend, index) in pending_friends" :key="index">
+							<v-list-item v-if="friend.accept === 0">
+								<v-list-item-action>
+									<img :src="`${friend.icon_path}`"  class="user-image">
+								</v-list-item-action>
+
+								<v-list-item-content>
+									<v-list-item-title>{{friend.nickname}}</v-list-item-title>
+								</v-list-item-content>
+								<v-list-item-action>
+									<v-btn @click="approvalUser(friend.id, index)">承認する</v-btn>
+								</v-list-item-action>
+								<v-list-item-action>
+									<v-btn @click="deleteFriend(friend.id, index)">拒否する</v-btn>
 								</v-list-item-action>
 							</v-list-item>
 						</v-list>
@@ -145,6 +169,8 @@ export default {
 	asyncData () {
 		return {
 			tags: [],
+			friends: [],
+			pending_friends: null,
 			tab: null
 		}
 	},
@@ -152,7 +178,8 @@ export default {
 		...mapGetters('user', ['user'])
 	},
 	mounted(){
-    this.fetchTags()
+    this.fetchTags(),
+		this.fetchFriends()
   },
 	methods:{
 		async fetchTags(){
@@ -167,25 +194,74 @@ export default {
 					console.log(error)
 				})
 		},
+		async fetchFriends(){
+			await this.$axios.get(`/v1/friends/${this.$route.params.id}`)
+			.then((response) => {
+				this.friends = response.data.data[0]
+				this.pending_friends = response.data.data[1]
+			},
+			(error) =>{
+				console.log(error)
+			})
+		},
 		async deleteUser(){
 			confirm('ユーザーを削除します。本当によろしいですか？')
 			await this.$axios.delete(`/auth`, {data:{id:this.$route.params.id}})
-				.then((response) => {
-					this.showMessage({
-						message: "削除に成功しました",
-						type: "green",
-						status: true
-					})
-					this.logout()
-					this.$router.go('/login')
-				},
-				(error) => {
-					this.showMessage({
-						message: "削除に失敗しました",
-						type: "red",
-						status: true
-					})
+			.then((response) => {
+				this.showMessage({
+					message: "削除に成功しました",
+					type: "green",
+					status: true
 				})
+				this.logout()
+				this.$router.go('/login')
+			},
+			(error) => {
+				this.showMessage({
+					message: "削除に失敗しました",
+					type: "red",
+					status: true
+				})
+			})
+		},
+		async approvalUser(id, index){
+			await this.$axios.post('/v1/friends/approval', {user_id: this.user.user.id, friend_id: id})
+			.then((response) => {
+				this.friends.push(this.pending_friends[index])
+				this.pending_friends.splice(index, 1)
+				const result = response.data
+				this.showMessage({
+					message: result.data,
+					type: result.color,
+					status: true
+				})
+			},
+			(error) => {
+				this.showMessage({
+					message: "申請に失敗しました",
+					type: "red",
+					status: true
+				})
+			})
+		},
+		async deleteFriend(id, index){
+			await this.$axios.delete(`/v1/friends/${this.$route.params.id}`, {data:{friend_id: id}})
+			.then((response) => {
+				this.friends.splice(index, 1)
+				const result = response.data
+				this.showMessage({
+					message: result.data,
+					type: result.color,
+					status: true
+				})
+			},
+			(error) => {
+				this.showMessage({
+					message: "解除に失敗しました",
+					type: "red",
+					status: true
+				})
+			})
 		},
 		...mapActions('flashMessage', ['showMessage']),
 		...mapActions('user', ['logout'])
@@ -202,5 +278,12 @@ export default {
 	.user_info{
 		margin-top: 3rem;
 	}
+
+  .user-image{
+    border-radius: 50%;
+    width:  50px;
+    height: 50px;
+    margin: 1rem 1rem;
+  }
 
 </style>

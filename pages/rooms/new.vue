@@ -22,6 +22,12 @@
 								required
 							/>
 						</ValidationProvider>
+						<v-select
+							v-model="genre"
+							:items="items"
+							:menu-props="{ top: true, offsetY: true }"
+							label="ジャンル"
+						></v-select>
 						<v-file-input @change="setImage" label="画像" />
 						<v-checkbox
 							v-model="private_data"
@@ -86,6 +92,8 @@ export default {
 			description: "",
 			private_data: false,
 			image: null,
+			genre: null,
+			items: ['アニメ', '漫画', 'ゲーム', 'カメラ', 'スポーツ', '旅', 'プラモデル', '小説', 'イラスト'],
 			user_name: null,
 			users:[],
 			src_users:[]
@@ -99,12 +107,13 @@ export default {
 	},
 	methods:{
 		async fetchUsers(){
-			await this.$axios.get(`/v1/rooms/new`)
+			await this.$axios.get(`/v1/friends/${this.user.user.id}`)
 			.then((response) => {
-				const user_datas = response.data.data
+				const user_datas = response.data.data[0]
 				for(let i=0;i<user_datas.length;i++){
 					this.src_users.push(user_datas[i]['nickname'])
 				}
+				console.log(this.src_users);
 			},
 			(error) => {
 				console.log(error)
@@ -114,8 +123,15 @@ export default {
       this.$refs.observer.validate()
     },
 		async AddUsers(){
-			if(this.user_name !== ""){
+			if(this.user_name !== "" && this.src_users.includes(this.user_name)){
 				this.users.push(this.user_name)
+				this.user_name = ""
+			}else{
+				this.showMessage({
+					message: "フレンド以外のユーザーは登録できません",
+					type: "red",
+					status: true
+				})
 				this.user_name = ""
 			}
 		},
@@ -128,8 +144,9 @@ export default {
 		},
 		async createRoom(){
 			const formData = new FormData()
-			this.users.push(this.user.user.nickname)
+			this.users.push(this.user.user.id)
 			formData.append('room[name]', this.name)
+			formData.append('room[genre]', this.genre)
 			formData.append('room[description]', this.description)
 			formData.append('room[private]', this.private_data)
 			formData.append('room[leader]', this.user.user.nickname)
