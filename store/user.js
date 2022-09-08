@@ -39,6 +39,7 @@ export const actions = {
 			const res_data = response
 			const user = res_data.data.data
 			const icon = res_data.data.icon_path
+			cookies.set('isLoggedin', true, {maxAge: 86400})
 			cookies.set('user', {user}, {maxAge: 86400})
 			cookies.set('icon', icon, {maxAge: 86400})
 			commit('setUser', {user, icon})
@@ -62,6 +63,7 @@ export const actions = {
 			.then((response) => {
 				const user = response.data.data
 				const icon = response.data.icon_path
+				cookies.set('isLoggedin', true, {maxAge: 86400})
 				cookies.set('user', {user}, {maxAge: 86400})
 				cookies.set('icon', icon, {maxAge: 86400})
 				commit('setUser', {user, icon})
