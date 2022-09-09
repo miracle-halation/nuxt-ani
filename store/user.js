@@ -1,8 +1,5 @@
 import Cookie from 'universal-cookie'
 
-const config = {
-	headers: { "Content-Type": "multipart/form-data" }
-}
 const cookies = new Cookie()
 
 export const state = () => ({
@@ -63,7 +60,7 @@ export const actions = {
 		})
 	},
 	async signUp({commit, dispatch}, {data}){
-		await this.$axios.post('/auth', data, config)
+		await this.$axios.post('/auth', data)
 			.then((response) => {
 				const user = response.data.data
 				const user_id = user.id
@@ -86,6 +83,10 @@ export const actions = {
 	},
 	async logout({commit, dispatch}){
 		commit('logoutUser')
+		cookies.remove('client')
+		cookies.remove('access-token')
+		cookies.remove('uid')
+		cookies.remove('token-type')
 		dispatch("flashMessage/showMessage", {
 			message: "ログアウトしました",
 			type: "green",
