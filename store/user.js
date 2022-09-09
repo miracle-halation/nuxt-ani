@@ -7,27 +7,33 @@ const cookies = new Cookie()
 
 export const state = () => ({
 	user: null,
+	user_id: null,
 	isLoggedIn: false,
 	icon: null
 })
 
 export const getters = {
 	user: (state) => state.user,
+	user_id: (state) => state.user_id,
 	isLoggedIn: (state) => state.isLoggedIn,
 	icon: (state) => state.icon
 }
 
 export const mutations = {
-	setUser(state, { user, icon }){
-		state.user = user
+	setUser(state, { user_id, icon }){
+		state.user_id = user_id
 		state.isLoggedIn = true
 		state.icon = icon
+		cookies.set('user_id', user_id, {maxAge: 86400})
+		cookies.set('isLoggedin', true, {maxAge: 86400})
+		cookies.set('icon', icon, {maxAge: 86400})
 	},
 	logoutUser(state){
-		state.user = null
+		state.user_id = null
 		state.isLoggedIn = false
 		state.icon = null
-		cookies.remove('user')
+		cookies.remove('user_id')
+		cookies.remove('isLoggedin')
 		cookies.remove('icon')
 	},
 }
@@ -38,11 +44,9 @@ export const actions = {
 		.then((response) => {
 			const res_data = response
 			const user = res_data.data.data
+			const user_id = user.id
 			const icon = res_data.data.icon_path
-			cookies.set('isLoggedin', true, {maxAge: 86400})
-			cookies.set('user', {user}, {maxAge: 86400})
-			cookies.set('icon', icon, {maxAge: 86400})
-			commit('setUser', {user, icon})
+			commit('setUser', {user_id, icon})
 			dispatch("flashMessage/showMessage", {
 				message: "ログインしました",
 				type: "green",
@@ -62,11 +66,9 @@ export const actions = {
 		await this.$axios.post('/auth', data, config)
 			.then((response) => {
 				const user = response.data.data
+				const user_id = user.id
 				const icon = response.data.icon_path
-				cookies.set('isLoggedin', true, {maxAge: 86400})
-				cookies.set('user', {user}, {maxAge: 86400})
-				cookies.set('icon', icon, {maxAge: 86400})
-				commit('setUser', {user, icon})
+				commit('setUser', {user_id, icon})
 				dispatch("flashMessage/showMessage", {
 					message: "新規作成しました",
 					type: "green",

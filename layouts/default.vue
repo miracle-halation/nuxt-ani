@@ -51,7 +51,7 @@
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <template v-if="isLoggedIn">
-        <nuxt-link :to="`/user/${user.user.id}/profile`">
+        <nuxt-link :to="`/user/${user_id}/profile`">
           <img  :src="icon" class="user-image">
         </nuxt-link>
         <v-btn color="green" @click="handleLogout">ログアウト</v-btn>
@@ -120,7 +120,7 @@ export default {
     }
   },
   computed:{
-    ...mapGetters('user', ['user','isLoggedIn', 'icon'])
+    ...mapGetters('user', ['user_id','isLoggedIn', 'icon'])
 	},
   methods:{
     async handleLogout(){
