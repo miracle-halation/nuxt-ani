@@ -81,7 +81,7 @@ export default {
 	props:{
 		room: Array,
 		users: Array,
-		current_user: Object
+		current_user: Array
 	},
 	methods:{
 		async deleteRoom(){

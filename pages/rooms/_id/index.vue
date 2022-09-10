@@ -3,12 +3,12 @@
 		<DetailMenu
 			:room="this.room"
 			:users="this.users"
-			:current_user="this.user.user"
+			:current_user="this.current_user"
 		></DetailMenu>
 
 		<MessageField
 			:messages="this.messages"
-			:current_user="this.user.user"
+			:current_user="this.current_user"
 			:room="this.room"
 			:users="this.users"
 			v-model="message"
@@ -27,7 +27,7 @@
 						:key="i"
 					>
 						<v-list-item-content>
-							<UserMenu :user="user"></UserMenu>
+							<UserMenu	:user="user"></UserMenu>
 						</v-list-item-content>
 					</v-list-item>
 				</v-list-item-group>
@@ -54,15 +54,17 @@ export default {
 		return{
 			room: [],
 			users: [],
+			current_user: [],
 			messages: [],
-			message: null
+			message: null,
 		}
 	},
 	computed:{
-		...mapGetters('user', ['user', 'icon'])
+		...mapGetters('user', ['user_id', 'icon'])
 	},
 	mounted(){
-		this.fetchRoom()
+		this.fetchRoom(),
+		this.fetchCurrentUser()
 	},
 	methods:{
 		async fetchRoom(){
@@ -77,13 +79,24 @@ export default {
 				this.room['private'] = room_data.private
 				this.users = response.data.data[1]
 				this.messages = response.data.data[2]
-				const result = this.users.some((ele) => ele.id === this.user.user.id)
+				const result = this.users.some((ele) => ele.id === this.user_id)
 				if(room_data.private && !result){
 					this.$router.push('/rooms')
 				}
 			})
 			.catch((error) => {
 				this.$router.push('/rooms')
+			})
+		},
+		async fetchCurrentUser(){
+			await this.$axios.get(`/auth/validate_token`)
+			.then((response) => {
+				const user_data = response.data.data
+				this.current_user['id'] = user_data.id
+				this.current_user['nickname'] = user_data.nickname
+			},
+			(error) => {
+				console.log(error)
 			})
 		},
 		...mapActions('flashMessage', ['showMessage'])

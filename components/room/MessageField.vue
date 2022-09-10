@@ -74,7 +74,7 @@ export default {
 	props:{
 		room: Array,
 		messages: Array,
-		current_user: Object,
+		current_user: Array,
 		users: Array
 	},
 	components:{

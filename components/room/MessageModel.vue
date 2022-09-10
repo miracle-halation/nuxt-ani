@@ -66,7 +66,7 @@ export default {
 		chat: Number,
 		index: Number,
 		room: Array,
-		current_user: Object
+		current_user: Array
 	},
 	data(){
 		return{
