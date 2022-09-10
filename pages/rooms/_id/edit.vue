@@ -69,14 +69,16 @@ export default {
 			genre: null,
 			items: ['アニメ', '漫画', 'ゲーム', '動物', 'スポーツ'],
 			private_data: false,
-			image: null
+			image: null,
+			current_user: null,
 		}
 	},
 	computed:{
 		...mapGetters('user', ['user'])
 	},
 	mounted(){
-		this.fetchRoom()
+		this.fetchRoom(),
+		this.fetchCurrentUser()
 	},
 	methods:{
 		async fetchRoom(){
@@ -92,6 +94,15 @@ export default {
 				this.$router.push(`/rooms/${this.$route.params.id}`)
 			})
 		},
+		async fetchCurrentUser(){
+			await this.$axios.get(`/auth/validate_token`)
+			.then((response) => {
+				this.current_user = response.data.data
+			},
+			(error) => {
+				console.log(error)
+			})
+		},
 		async submit () {
       this.$refs.observer.validate()
     },
@@ -104,7 +115,7 @@ export default {
 			formData.append('room[genre]', this.genre)
 			formData.append('room[description]', this.description)
 			formData.append('room[private]', this.private_data)
-			formData.append('room[leader]', this.user.user.nickname)
+			formData.append('room[leader]', this.current_user.nickname)
 			if(this.image){
 				formData.append('room[image]', this.image)
 			}
