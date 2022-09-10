@@ -94,26 +94,37 @@ export default {
 			image: null,
 			genre: null,
 			items: ['アニメ', '漫画', 'ゲーム', 'カメラ', 'スポーツ', '旅', 'プラモデル', '小説', 'イラスト'],
+			current_user: null,
 			user_name: null,
 			users:[],
 			src_users:[]
 		}
 	},
 	mounted(){
-    this.fetchUsers()
+    this.fetchUsers(),
+		this.fetchCurrentUser()
   },
 	computed:{
-		...mapGetters('user', ['user'])
+		...mapGetters('user', ['user_id'])
 	},
 	methods:{
 		async fetchUsers(){
-			await this.$axios.get(`/v1/friends/${this.user.user.id}`)
+			await this.$axios.get(`/v1/friends/${this.user_id}`)
 			.then((response) => {
 				const user_datas = response.data.data[0]
 				for(let i=0;i<user_datas.length;i++){
 					this.src_users.push(user_datas[i]['nickname'])
 				}
 				console.log(this.src_users);
+			},
+			(error) => {
+				console.log(error)
+			})
+		},
+		async fetchCurrentUser(){
+			await this.$axios.get(`/auth/validate_token`)
+			.then((response) => {
+				this.current_user = response.data.data
 			},
 			(error) => {
 				console.log(error)
@@ -144,12 +155,12 @@ export default {
 		},
 		async createRoom(){
 			const formData = new FormData()
-			this.users.push(this.user.user.id)
+			this.users.push(this.current_user.id)
 			formData.append('room[name]', this.name)
 			formData.append('room[genre]', this.genre)
 			formData.append('room[description]', this.description)
 			formData.append('room[private]', this.private_data)
-			formData.append('room[leader]', this.user.user.nickname)
+			formData.append('room[leader]', this.current_user.nickname)
 			formData.append('user_ids', this.users)
 			if(this.image){
 				formData.append('room[image]', this.image)
