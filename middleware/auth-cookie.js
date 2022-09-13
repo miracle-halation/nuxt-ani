@@ -5,9 +5,10 @@ export default ({req, store}) => {
 		return
 	}
 	const cookies = new Cookie(req.headers.cookie)
-	const user = cookies.get('user')
+	const user_id = cookies.get('user_id')
+	const isLoggedin = cookies.get('isLoggedin')
 	const icon = cookies.get('icon')
-	if(user){
-		store.commit('user/setUser', {user, icon})
+	if(isLoggedin){
+		store.commit('user/setUser', { user_id, icon})
 	}
 }

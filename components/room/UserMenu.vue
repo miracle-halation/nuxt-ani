@@ -19,7 +19,7 @@
             {{user.nickname}}
           </h1>
         </v-card-title>
-        <v-card-subtitle class="apply" v-if="this.friends.includes(user.nickname) || user.nickname === this.current_user.user.nickname">
+        <v-card-subtitle class="apply" v-if="this.friends.includes(user.nickname) || user.id === this.user_id">
         </v-card-subtitle>
         <v-card-subtitle class="apply" v-else>
           <v-btn color="green" class="friend-apply" @click="applyFriend(user.id)">
@@ -59,7 +59,7 @@
 
   export default {
 		props:{
-			user: Object
+			user: Object,
 		},
     data () {
       return {
@@ -70,14 +70,12 @@
       }
     },
     computed:{
-      ...mapGetters("user",{
-        current_user: 'user'
-      })
-    },
+		  ...mapGetters('user', ['user_id'])
+	  },
     mounted(){
-    this.fetchTags(),
-    this.fetchFriends()
-  },
+      this.fetchTags(),
+      this.fetchFriends()
+    },
     methods:{
       async fetchTags(){
         await this.$axios.get(`/v1/tags/${this.user.id}`)
@@ -92,7 +90,7 @@
           })
 		  },
       async fetchFriends(){
-        await this.$axios.get(`/v1/friends/${this.current_user.user.id}`)
+        await this.$axios.get(`/v1/friends/${this.user_id}`)
         .then((response) => {
           const user_datas = response.data.data[0]
           for(let i=0;i<user_datas.length;i++){
@@ -105,7 +103,7 @@
         })
       },
       async applyFriend(id){
-        await this.$axios.post('/v1/friends/apply', {user_id: this.current_user.user.id, friend_id: id})
+        await this.$axios.post('/v1/friends/apply', {user_id: this.user_id, friend_id: id})
         .then((response) => {
           const result = response.data
           this.showMessage({
