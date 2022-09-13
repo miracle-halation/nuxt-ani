@@ -7,7 +7,7 @@
 			class="user_info"
     >
 			<v-img
-				:src="`${user.user.icon_path}`"
+				:src="`${icon}`"
 				height="200px"
 			></v-img>
 			<v-card>
@@ -45,11 +45,11 @@
 					<v-tab-item value="tab-1">
 						<v-card>
 							<v-card-title class="cyan darken-1">
-								<span class="text-h5 white--text">{{user.user.nickname}}</span>
+								<span class="text-h5 white--text">{{current_user.nickname}}</span>
 
 								<v-spacer></v-spacer>
 
-								<nuxt-link :to="`/user/${user.user.id}/edit`">
+								<nuxt-link :to="`/user/${user_id}/edit`">
 									<v-btn
 										dark
 										icon
@@ -74,7 +74,7 @@
 									</v-list-item-action>
 
 									<v-list-item-content>
-										<v-list-item-title>{{user.user.email}}</v-list-item-title>
+										<v-list-item-title>{{current_user.email}}</v-list-item-title>
 									</v-list-item-content>
 								</v-list-item>
 
@@ -86,7 +86,7 @@
 									</v-list-item-action>
 
 									<v-list-item-content>
-										<v-list-item-title>{{user.user.address}}</v-list-item-title>
+										<v-list-item-title>{{current_user.address}}</v-list-item-title>
 									</v-list-item-content>
 								</v-list-item>
 
@@ -98,7 +98,7 @@
 									</v-list-item-action>
 
 									<v-list-item-content>
-										<v-list-item-title>{{user.user.myinfo}}</v-list-item-title>
+										<v-list-item-title>{{current_user.myinfo}}</v-list-item-title>
 									</v-list-item-content>
 								</v-list-item>
 							</v-list>
@@ -160,9 +160,9 @@
 import {mapGetters, mapActions} from 'vuex'
 export default {
 	middleware({store, params, redirect}){
-		const user = store.getters['user/user']
+		const user_id = store.getters['user/user_id']
 		const auth = store.getters['user/isLoggedIn']
-		if(!auth || user.user.id != params.id){
+		if(!auth || user_id != params.id){
 			return redirect('/rooms')
 		}
 	},
@@ -171,15 +171,17 @@ export default {
 			tags: [],
 			friends: [],
 			pending_friends: null,
-			tab: null
+			tab: null,
+			current_user: [],
 		}
 	},
 	computed:{
-		...mapGetters('user', ['user'])
+		...mapGetters('user', ['user_id', 'icon'])
 	},
 	mounted(){
     this.fetchTags(),
-		this.fetchFriends()
+		this.fetchFriends(),
+		this.fetchCurrentUser()
   },
 	methods:{
 		async fetchTags(){
@@ -204,6 +206,15 @@ export default {
 				console.log(error)
 			})
 		},
+		async fetchCurrentUser(){
+			await this.$axios.get(`/auth/validate_token`)
+			.then((response) => {
+				this.current_user = response.data.data
+			},
+			(error) => {
+				console.log(error)
+			})
+		},
 		async deleteUser(){
 			confirm('ユーザーを削除します。本当によろしいですか？')
 			await this.$axios.delete(`/auth`, {data:{id:this.$route.params.id}})
@@ -225,7 +236,7 @@ export default {
 			})
 		},
 		async approvalUser(id, index){
-			await this.$axios.post('/v1/friends/approval', {user_id: this.user.user.id, friend_id: id})
+			await this.$axios.post('/v1/friends/approval', {user_id: this.user_id, friend_id: id})
 			.then((response) => {
 				this.friends.push(this.pending_friends[index])
 				this.pending_friends.splice(index, 1)

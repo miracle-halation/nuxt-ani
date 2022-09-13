@@ -83,10 +83,11 @@ export default {
 		}
 	},
 	computed:{
-		...mapGetters('user', ['user'])
+		...mapGetters('user', ['user_id'])
 	},
 	mounted(){
-    this.fetchTags()
+    this.fetchTags(),
+		this.fetchCurrentUser()
   },
 	methods:{
 		async fetchTags(){
@@ -96,12 +97,21 @@ export default {
 					for(let i=0;i<tags.length;i++){
 						this.tags.push(tags[i]['name'])
 					}
-					this.address = this.user.user.address
-					this.myinfo = this.user.user.myinfo
 				},
 				(error) => {
 					console.log(error)
 				})
+		},
+		async fetchCurrentUser(){
+			await this.$axios.get(`/auth/validate_token`)
+			.then((response) => {
+				const current_user = response.data.data
+				this.address = current_user.address
+				this.myinfo = current_user.myinfo
+			},
+			(error) => {
+				console.log(error)
+			})
 		},
 		async submit () {
       this.$refs.observer.validate()
@@ -120,7 +130,7 @@ export default {
 			formData.append('address', this.address)
 			formData.append('myinfo', this.myinfo)
 			formData.append('tags', this.tags)
-			formData.append('id', this.user.user.id)
+			formData.append('id', this.user_id)
 			await this.$axios.patch(`/auth/`, formData)
 			.then((response) => {
 				this.$router.push('/rooms')
