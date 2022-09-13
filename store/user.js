@@ -29,6 +29,10 @@ export const mutations = {
 		state.user_id = null
 		state.isLoggedIn = false
 		state.icon = null
+		cookies.remove('access-token')
+		cookies.remove('client')
+		cookies.remove('uid')
+		cookies.remove('token-type')
 		cookies.remove('user_id')
 		cookies.remove('isLoggedin')
 		cookies.remove('icon')

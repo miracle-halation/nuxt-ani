@@ -9,6 +9,6 @@ export default ({req, store}) => {
 	const isLoggedin = cookies.get('isLoggedin')
 	const icon = cookies.get('icon')
 	if(isLoggedin){
-		store.commit('user/setUser', {user_id, icon})
+		store.commit('user/setUser', { user_id, icon})
 	}
 }

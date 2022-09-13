@@ -12,6 +12,10 @@ export default function({ $axios }) {
 
   $axios.onResponse(response => {
     if (response.headers['access-token']) {
+      cookies.remove('access-token')
+      cookies.remove('client')
+      cookies.remove('uid')
+      cookies.remove('token-type')
 			cookies.set('access-token', response.headers["access-token"], {maxAge: 86400})
 			cookies.set('client', response.headers.client, {maxAge: 86400})
 			cookies.set('uid', response.headers.uid, {maxAge: 86400})
