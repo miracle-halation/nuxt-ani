@@ -7,7 +7,7 @@
 			:key="index"
 		>
 			<v-col class="chat"
-				v-if="`${chat.user_id}` === `${current_user.id}`"
+				v-if="`${chat.user_id}` === `${Number(current_user)}`"
 			>
 				<MessageModal
 					:chat="chat.id"
@@ -37,7 +37,7 @@
 				</div>
 				<div class="user_info">
 					<img :src="`${chat.icon_path}`" class="user-image">
-					<p>{{current_user.nickname}}</p>
+					<p>{{chat.nickname}}</p>
 				</div>
 			</v-col>
 			<v-col class="chat"
@@ -45,7 +45,7 @@
 			>
 				<div class="user_info">
 					<img :src="`${chat.icon_path}`" class="user-image">
-					<p>{{current_user.nickname}}</p>
+					<p>{{chat.nickname}}</p>
 				</div>
 				<div class="balloon6">
 					<div class="chatting">
@@ -74,7 +74,7 @@ export default {
 	props:{
 		room: Array,
 		messages: Array,
-		current_user: Array,
+		current_user: String,
 		users: Array
 	},
 	components:{
@@ -108,11 +108,13 @@ export default {
 	},
 	methods:{
 		async createMessage(){
-			const result = this.users.some((ele) => ele.id === this.current_user.id)
+			console.log(this.current_user)
+			console.log(this.users)
+			const result = this.users.some((ele) => ele.id === Number(this.current_user))
 			if(result){
 				const formData = new FormData()
 				formData.append('message[content]', this.message)
-				formData.append('message[user_id]', this.current_user.id)
+				formData.append('message[user_id]', this.current_user)
 				formData.append('message[room_id]', this.room.id)
 				await this.$axios.post(`/v1/messages`, formData)
 				.then((response) => {

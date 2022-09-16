@@ -3,12 +3,12 @@
 		<DetailMenu
 			:room="this.room"
 			:users="this.users"
-			:current_user="this.current_user"
+			:current_user="this.user_id"
 		></DetailMenu>
 
 		<MessageField
 			:messages="this.messages"
-			:current_user="this.current_user"
+			:current_user="this.user_id"
 			:room="this.room"
 			:users="this.users"
 			v-model="message"
@@ -54,7 +54,6 @@ export default {
 		return{
 			room: [],
 			users: [],
-			current_user: [],
 			messages: [],
 			message: null,
 		}
@@ -63,8 +62,7 @@ export default {
 		...mapGetters('user', ['user_id', 'icon'])
 	},
 	mounted(){
-		this.fetchRoom(),
-		this.fetchCurrentUser()
+		this.fetchRoom()
 	},
 	methods:{
 		async fetchRoom(){
@@ -86,17 +84,6 @@ export default {
 			})
 			.catch((error) => {
 				this.$router.push('/rooms')
-			})
-		},
-		async fetchCurrentUser(){
-			await this.$axios.get(`/auth/validate_token`)
-			.then((response) => {
-				const user_data = response.data.data
-				this.current_user['id'] = user_data.id
-				this.current_user['nickname'] = user_data.nickname
-			},
-			(error) => {
-				console.log(error)
 			})
 		},
 		...mapActions('flashMessage', ['showMessage'])
