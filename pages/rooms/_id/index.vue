@@ -14,25 +14,12 @@
 			v-model="message"
 		></MessageField>
 
-		<v-card
-			class="mx-auto"
-			max-width="300"
-			tile
+		<UserMenu
+			:users="users"
+			:friends="this.friends"
+			:current_user="this.user_id"
 		>
-			<v-list dense>
-				<v-list-item-title class="list-title">所属ユーザー</v-list-item-title>
-				<v-list-item-group>
-					<v-list-item
-						v-for="(user, i) in users"
-						:key="i"
-					>
-						<v-list-item-content>
-							<UserMenu	:user="user"></UserMenu>
-						</v-list-item-content>
-					</v-list-item>
-				</v-list-item-group>
-			</v-list>
-		</v-card>
+		</UserMenu>
 	</v-row>
 
 </template>
@@ -56,6 +43,7 @@ export default {
 			users: [],
 			messages: [],
 			message: null,
+			friends: []
 		}
 	},
 	computed:{
@@ -77,6 +65,7 @@ export default {
 				this.room['private'] = room_data.private
 				this.users = response.data.data[1]
 				this.messages = response.data.data[2]
+				this.friends = response.data.data[3]
 				const result = this.users.some((ele) => ele.id === this.user_id)
 				if(room_data.private && !result){
 					this.$router.push('/rooms')
