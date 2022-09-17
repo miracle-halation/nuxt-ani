@@ -65,7 +65,10 @@ export default {
 				this.room['private'] = room_data.private
 				this.users = response.data.data[1]
 				this.messages = response.data.data[2]
-				this.friends = response.data.data[3]
+				const friend_datas = response.data.data[3]
+				for(let i=0;i<friend_datas.length;i++){
+					this.friends.push(friend_datas[i]['id'])
+				}
 				const result = this.users.some((ele) => ele.id === this.user_id)
 				if(room_data.private && !result){
 					this.$router.push('/rooms')

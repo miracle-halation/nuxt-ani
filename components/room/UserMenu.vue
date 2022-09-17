@@ -13,62 +13,62 @@
       >
         <v-list-item-content>
           <v-row justify="center">
-            <img :src="`${user.icon_path}`" class="user-image" @click.stop="dialog = true">
+            <img :src="`${user.icon_path}`" class="user-image" @click="openDialog(user)">
             <v-list-item-content
               class="user-list"
-              @click.stop="dialog = true"
+              @click="openDialog(user)"
             >
               {{user.nickname}}
             </v-list-item-content>
-
-            <v-dialog
-              v-model="dialog"
-              max-width="700"
-            >
-              <v-card>
-                <v-card-title class="text-center justify-center py-6">
-                  <img :src="`${user.icon_path}`" class="user-image">
-                  <h1 class="font-weight-bold text-h2 basil--text">
-                    {{user.nickname}}
-                  </h1>
-                </v-card-title>
-                <v-card-subtitle class="apply" v-if="friends.includes(user.nickname) || user.id === Number(current_user)">
-                </v-card-subtitle>
-                <v-card-subtitle class="apply" v-else>
-                  <v-btn color="green" class="friend-apply" @click="applyFriend(user.id)">
-                    フレンド申請
-                  </v-btn>
-                </v-card-subtitle>
-
-                <v-tabs
-                  v-model="tab"
-                  background-color="transparent"
-                  grow
-                >
-                  <v-tab>自己紹介</v-tab>
-                  <v-tab>お気に入り</v-tab>
-                </v-tabs>
-
-                <v-tabs-items v-model="tab">
-                  <v-tab-item>
-                    <v-card flat>
-                      <v-card-text>{{user.myinfo}}</v-card-text>
-                    </v-card>
-                  </v-tab-item>
-
-                  <v-tab-item v-for="(tag, index) in tags" :key="index">
-                    <v-card flat>
-                      <v-card-text>{{tag}}</v-card-text>
-                    </v-card>
-                  </v-tab-item>
-                </v-tabs-items>
-              </v-card>
-            </v-dialog>
           </v-row>
         </v-list-item-content>
       </v-list-item>
     </v-list-item-group>
   </v-list>
+  <v-dialog
+    v-model="dialog"
+    :retain-focus="false"
+    max-width="700"
+  >
+    <v-card>
+      <v-card-title class="text-center justify-center py-6">
+        <img :src="`${dialog_user.icon_path}`" class="user-image">
+        <h1 class="font-weight-bold text-h2 basil--text">
+          {{dialog_user.nickname}}
+        </h1>
+      </v-card-title>
+      <v-card-subtitle class="apply" v-if="friends.includes(dialog_user.id) || dialog_user.id === Number(current_user)">
+      </v-card-subtitle>
+      <v-card-subtitle class="apply" v-else>
+        <v-btn color="green" class="friend-apply" @click="applyFriend(dialog_user.id)">
+          フレンド申請
+        </v-btn>
+      </v-card-subtitle>
+
+      <v-tabs
+        v-model="tab"
+        background-color="transparent"
+        grow
+      >
+        <v-tab>自己紹介</v-tab>
+        <v-tab>お気に入り</v-tab>
+      </v-tabs>
+
+      <v-tabs-items v-model="tab">
+        <v-tab-item>
+          <v-card flat>
+            <v-card-text>{{dialog_user.myinfo}}</v-card-text>
+          </v-card>
+        </v-tab-item>
+
+        <v-tab-item v-for="(tag, index) in tags" :key="index">
+          <v-card flat>
+            <v-card-text>{{tag}}</v-card-text>
+          </v-card>
+        </v-tab-item>
+      </v-tabs-items>
+    </v-card>
+  </v-dialog>
 </v-card>
 
 </template>
@@ -86,7 +86,8 @@
       return {
         dialog: false,
         tags: ["test"],
-        tab: null
+        tab: null,
+        dialog_user: []
       }
     },
     methods:{
@@ -125,6 +126,10 @@
 					})
         }
         )
+      },
+      async openDialog(user){
+        this.dialog = true
+        this.dialog_user = user
       },
       ...mapActions('flashMessage', ['showMessage']),
     }
