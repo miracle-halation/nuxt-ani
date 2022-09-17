@@ -104,7 +104,6 @@ export default {
 			formData.append('room[genre]', this.genre)
 			formData.append('room[description]', this.description)
 			formData.append('room[private]', this.private_data)
-			formData.append('room[leader]', this.user_id)
 			if(this.image){
 				formData.append('room[image]', this.image)
 			}
