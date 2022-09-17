@@ -19,11 +19,6 @@
 				</v-list-item>
 				<v-list-item>
 					<v-list-item-content>
-						<v-list-item-action-text>{{room.leader}}</v-list-item-action-text>
-					</v-list-item-content>
-				</v-list-item>
-				<v-list-item>
-					<v-list-item-content>
 						<v-list-item-action-text v-if="`${room.private}` === 'true'">プライベート</v-list-item-action-text>
 						<v-list-item-action-text v-else>パブリック</v-list-item-action-text>
 					</v-list-item-content>
