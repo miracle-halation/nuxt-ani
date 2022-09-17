@@ -236,7 +236,10 @@ export default {
 			})
 		},
 		async approvalUser(id, index){
-			await this.$axios.post('/v1/friends/approval', {user_id: this.user_id, friend_id: id})
+			const formData = new FormData()
+			formData.append('user_id', this.user_id)
+			formData.append('friend_id', id)
+			await this.$axios.post('/v1/friends/approval', formData)
 			.then((response) => {
 				this.friends.push(this.pending_friends[index])
 				this.pending_friends.splice(index, 1)
@@ -256,7 +259,7 @@ export default {
 			})
 		},
 		async deleteFriend(id, index){
-			await this.$axios.delete(`/v1/friends/${this.$route.params.id}`, {data:{friend_id: id}})
+			await this.$axios.delete(`/v1/friends/${id}`)
 			.then((response) => {
 				this.friends.splice(index, 1)
 				const result = response.data

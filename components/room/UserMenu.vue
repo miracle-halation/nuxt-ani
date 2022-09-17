@@ -19,7 +19,7 @@
             {{user.nickname}}
           </h1>
         </v-card-title>
-        <v-card-subtitle class="apply" v-if="this.friends.includes(user.nickname) || user.id === this.user_id">
+        <v-card-subtitle class="apply" v-if="this.friends.includes(user.nickname) || user.id === Number(this.user_id)">
         </v-card-subtitle>
         <v-card-subtitle class="apply" v-else>
           <v-btn color="green" class="friend-apply" @click="applyFriend(user.id)">
@@ -96,14 +96,16 @@
           for(let i=0;i<user_datas.length;i++){
             this.friends.push(user_datas[i]['nickname'])
           }
-          console.log(this.friends.includes("sss"))
         },
         (error) => {
           console.log(error)
         })
       },
       async applyFriend(id){
-        await this.$axios.post('/v1/friends/apply', {user_id: this.user_id, friend_id: id})
+        const formData = new FormData()
+				formData.append('user_id', this.user_id)
+        formData.append('friend_id', id)
+        await this.$axios.post('/v1/friends/apply', formData)
         .then((response) => {
           const result = response.data
           this.showMessage({
