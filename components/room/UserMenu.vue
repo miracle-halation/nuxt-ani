@@ -61,8 +61,8 @@
           </v-card>
         </v-tab-item>
 
-        <v-tab-item v-for="(tag, index) in tags" :key="index">
-          <v-card flat>
+        <v-tab-item>
+          <v-card flat v-for="(tag, index) in tags" :key="index">
             <v-card-text>{{tag}}</v-card-text>
           </v-card>
         </v-tab-item>
@@ -85,26 +85,12 @@
     data () {
       return {
         dialog: false,
-        tags: ["test"],
+        tags: [],
         tab: null,
         dialog_user: []
       }
     },
     methods:{
-      async fetchTags(user_id){
-        this.tags = []
-        await this.$axios.get(`/v1/tags/${user_id}`)
-        .then((response) => {
-          const tags = response.data.data
-          for(let i=0;i<tags.length;i++){
-            this.tags.push(tags[i]['name'])
-          }
-          console.log(this.tags);
-        },
-        (error) => {
-          console.log(error)
-        })
-		  },
       async applyFriend(id){
         const formData = new FormData()
 				formData.append('user_id', this.current_user)
@@ -130,6 +116,18 @@
       async openDialog(user){
         this.dialog = true
         this.dialog_user = user
+        this.tags = []
+        await this.$axios.get(`/v1/tags/${user.id}`)
+        .then((response) => {
+          const tags = response.data.data
+          for(let i=0;i<tags.length;i++){
+            this.tags.push(tags[i]['name'])
+          }
+          console.log(this.tags);
+        },
+        (error) => {
+          console.log(error)
+        })
       },
       ...mapActions('flashMessage', ['showMessage']),
     }
