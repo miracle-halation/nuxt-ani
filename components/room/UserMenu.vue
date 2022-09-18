@@ -123,7 +123,6 @@
           for(let i=0;i<tags.length;i++){
             this.tags.push(tags[i]['name'])
           }
-          console.log(this.tags);
         },
         (error) => {
           console.log(error)
