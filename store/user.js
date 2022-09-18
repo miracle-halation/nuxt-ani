@@ -29,13 +29,6 @@ export const mutations = {
 		state.user_id = null
 		state.isLoggedIn = false
 		state.icon = null
-		cookies.remove('access-token')
-		cookies.remove('client')
-		cookies.remove('uid')
-		cookies.remove('token-type')
-		cookies.remove('user_id')
-		cookies.remove('isLoggedin')
-		cookies.remove('icon')
 	},
 }
 
@@ -86,15 +79,29 @@ export const actions = {
 			})
 	},
 	async logout({commit, dispatch}){
-		commit('logoutUser')
-		cookies.remove('client')
-		cookies.remove('access-token')
-		cookies.remove('uid')
-		cookies.remove('token-type')
-		dispatch("flashMessage/showMessage", {
-			message: "ログアウトしました",
-			type: "green",
-			status: true
-		}, {root:true})
+		await this.$axios.delete('/auth/sign_out')
+			.then((response) => {
+				commit('logoutUser')
+				cookies.remove('access-token')
+				cookies.remove('client')
+				cookies.remove('uid')
+				cookies.remove('token-type')
+				cookies.remove('user_id')
+				cookies.remove('isLoggedin')
+				cookies.remove('icon')
+				dispatch("flashMessage/showMessage", {
+					message: "ログアウトしました",
+					type: "green",
+					status: true
+				}, {root:true})
+				this.$router.go('/login')
+			},
+			(error) => {
+				dispatch("flashMessage/showMessage", {
+					message: "ログアウトに失敗しました",
+					type: "red",
+					status: true
+				}, {root:true})
+			})
 	}
 }
