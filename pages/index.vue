@@ -1,7 +1,7 @@
 <template>
 	<v-row no-gutters>
 		<v-img
-			src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
+			:src="require(`@/assets/images/top.jpg`)"
 			class="test"
 		></v-img>
 		<v-col
@@ -12,8 +12,8 @@
 		</v-col>
 
 		<v-card
-			v-for="n in 3"
-      :key="n"
+			v-for="(data, index) in cardDatas"
+      :key="index"
       class="mx-auto my-12"
       max-width="374"
     >
@@ -26,9 +26,10 @@
       </template>
       <v-img
         height="250"
-        src="https://cdn.vuetifyjs.com/images/cards/cooking.png"
+        :src="data.image"
       ></v-img>
-      <v-card-title>Cafe Badilico</v-card-title>
+      <v-card-title>{{data.title}}</v-card-title>
+			<v-card-text>{{data.description}}</v-card-text>
     </v-card>
 
 		<v-col
@@ -48,6 +49,30 @@
 	</v-row>
 
 </template>
+
+<script>
+export default {
+	data: () => ({
+		cardDatas:[
+			{
+				'title': 'ルームを作成',
+				'description': '同じ趣味同士で語り合おう',
+				'image': require("@/assets/images/des1.jpg")
+			},
+			{
+				'title': 'フレンドになろう',
+				'description': '同じ趣味の仲間を作っていこう',
+				'image': require("@/assets/images/des2.jpg")
+			},
+			{
+				'title': '仲間たちと最高の思い出を！',
+				'description': '同じ趣味の仲間を作って充実の趣味ライフを！',
+				'image': require("@/assets/images/des3.jpg")
+			}
+		]
+	}),
+}
+</script>
 
 <style scoped>
 	.test{
