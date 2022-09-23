@@ -15,84 +15,9 @@
           </v-btn>
         </v-container>
       </v-form>
-      <!-- 自分の所属するルームを表示or傾向によるおすすめ表示 -->
-      <v-row><h1>人気のルーム</h1></v-row>
-        <v-slide-group
-          v-model="model"
-          class="pa-4"
-          active-class="success"
-          show-arrows
-        >
-          <v-slide-item
-            v-for="room in this.favorite_rooms"
-            :key="room.id"
-          >
-            <v-row
-              no-gutters
-              class="test"
-              v-if="`${room.private}` === 'false'"
-            >
-              <nuxt-link :to="`/rooms/${room.id}`">
-                <v-card
-                  class="mx-auto"
-                  max-width="340"
-                >
-                  <v-img
-                    :src="`${room.image_path}`"
-                    height="200px"
-                  ></v-img>
-                  <v-card-title>
-                    {{room.name}}
-                  </v-card-title>
-                  <v-card-subtitle>
-                    {{room.description}}
-                  </v-card-subtitle>
-                </v-card>
-              </nuxt-link>
-            </v-row>
-          </v-slide-item>
-        </v-slide-group>
 
-      <!-- ここに最新のルームを表示 -->
-        <v-row><h1>最新ルーム</h1></v-row>
-        <v-slide-group
-          v-model="model"
-          class="pa-4"
-          active-class="success"
-          show-arrows
-        >
-          <v-slide-item
-            v-for="room in this.rooms_data"
-            :key="room.id"
-          >
-            <v-row
-              no-gutters
-              class="test"
-              v-if="`${room.private}` === 'false'"
-            >
-              <nuxt-link :to="`/rooms/${room.id}`">
-                <v-card
-                  class="mx-auto"
-                  max-width="340"
-                >
-                  <v-img
-                    :src="`${room.image_path}`"
-                    height="200px"
-                  ></v-img>
-                  <v-card-title>
-                    {{room.name}}
-                  </v-card-title>
-                  <v-card-subtitle>
-                    {{room.description}}
-                  </v-card-subtitle>
-                </v-card>
-              </nuxt-link>
-            </v-row>
-          </v-slide-item>
-        </v-slide-group>
-
-        <!-- ここにワンクリック検索用の画像をはる -->
-      <v-row><h1>ジャンル</h1></v-row>
+      <!-- ここにワンクリック検索用の画像をはる -->
+      <v-row><h1>ジャンルを選択する</h1></v-row>
       <v-row no-gutters >
           <v-card
             v-for="(genre, index) in genres"
@@ -122,7 +47,6 @@ export default {
 		return{
       model: null,
       rooms_data: null,
-      favorite_rooms: null,
       search: null,
       genres: [
         'ゲーム',
@@ -136,22 +60,7 @@ export default {
         'イラスト'
       ]
 		}
-	},
-  mounted(){
-    this.fetchRooms()
-  },
-  methods:{
-    fetchRooms(){
-      this.$axios.get('v1/rooms')
-      .then((response) => {
-        this.rooms_data = response.data.data[0]
-        this.favorite_rooms = response.data.data[1]
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    }
-  }
+	}
 }
 </script>
 
