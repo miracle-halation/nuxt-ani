@@ -62,7 +62,7 @@
           <v-btn color="green" @click="handleLogout">ログアウト</v-btn>
         </template>
         <template v-else>
-          <nuxt-link :to="`/`">
+          <nuxt-link :to="`/`" tag="div">
             <v-toolbar-title v-text="title" />
           </nuxt-link>
         </template>
