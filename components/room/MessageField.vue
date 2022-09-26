@@ -108,8 +108,6 @@ export default {
 	},
 	methods:{
 		async createMessage(){
-			console.log(this.current_user)
-			console.log(this.users)
 			const result = this.users.some((ele) => ele.id === Number(this.current_user))
 			if(result){
 				const formData = new FormData()

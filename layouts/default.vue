@@ -136,7 +136,6 @@ export default {
             to: '/rooms/'+rooms[i]['id']
           })
         }
-        console.log(this.login_items)
       })
       .catch((error) => {
         console.log(error)
