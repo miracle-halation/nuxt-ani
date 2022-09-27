@@ -21,8 +21,8 @@ export default function({ $axios, store }) {
 			cookies.set('client', response.headers.client, {maxAge: 86400})
 			cookies.set('uid', response.headers.uid, {maxAge: 86400})
 			cookies.set('token-type', response.headers["token-type"], {maxAge: 86400})
-      store.dispatch('loading/decrementLoadingCount')
     }
+    store.dispatch('loading/decrementLoadingCount')
   })
 
   $axios.onError(e => {
