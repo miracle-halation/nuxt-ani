@@ -8,7 +8,7 @@
       fixed
       app
     >
-    <!-- のちにチャットルームを表示するかも -->
+      <!-- ログイン状態によって表記を変える -->
       <v-list v-if="!isLoggedIn">
         <v-list-item
           v-for="(item, i) in items"
@@ -25,6 +25,8 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+
+      <!-- ログインしている時 -->
       <v-list v-else>
         <v-list-item
           v-for="(item, i) in login_items"
@@ -42,11 +44,13 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+
     <v-app-bar
       :clipped-left="!clipped"
       fixed
       app
     >
+      <Loading></Loading>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
         <template v-if="isLoggedIn">
           <nuxt-link :to="`/rooms`" tag="div">
@@ -85,10 +89,12 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'
 import FlashMessage from "~/components/FlashMessage.vue"
+import Loading from '~/components/Loading'
 
 export default {
   components:{
-    FlashMessage: FlashMessage
+    FlashMessage: FlashMessage,
+    Loading: Loading
   },
   data () {
     return {
@@ -115,7 +121,8 @@ export default {
       login_items: [],
       miniVariant: false,
       mobile_breakpoint: 1904,
-      title: 'オリジナルアプリ'
+      title: 'オリジナルアプリ',
+      loading: false
     }
   },
   computed:{

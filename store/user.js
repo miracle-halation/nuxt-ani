@@ -46,7 +46,6 @@ export const actions = {
 				type: "green",
 				status: true
 			}, {root:true})
-			this.$router.go('/rooms')
 		},
 		(error) => {
 			dispatch("flashMessage/showMessage", {
@@ -55,6 +54,7 @@ export const actions = {
 				status: true
 			}, {root:true})
 		})
+		this.$router.go('/rooms')
 	},
 	async signUp({commit, dispatch}, {data}){
 		await this.$axios.post('/auth', data)
@@ -68,7 +68,6 @@ export const actions = {
 					type: "green",
 					status: true
 				}, {root:true})
-				this.$router.go('/rooms')
 			},
 			(error) => {
 				dispatch("flashMessage/showMessage", {
@@ -77,6 +76,7 @@ export const actions = {
 					status: true
 				}, {root:true})
 			})
+		this.$router.go('/rooms')
 	},
 	async logout({commit, dispatch}){
 		await this.$axios.delete('/auth/sign_out')
@@ -94,7 +94,6 @@ export const actions = {
 					type: "green",
 					status: true
 				}, {root:true})
-				this.$router.go('/login')
 			},
 			(error) => {
 				dispatch("flashMessage/showMessage", {
@@ -103,5 +102,6 @@ export const actions = {
 					status: true
 				}, {root:true})
 			})
+		this.$router.go('/login')
 	}
 }
