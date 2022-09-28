@@ -62,7 +62,9 @@ export default {
 	},
 	methods:{
 		searchRooms(){
-			this.$axios.post(`/v1/rooms/search`,{data: this.$route.query.query})
+      const formData = new FormData()
+      formData.append('data', this.$route.query.query)
+			this.$axios.post(`/v1/rooms/search`, formData)
 			.then((response) => {
 				this.rooms = response.data.data
 			})
@@ -71,7 +73,9 @@ export default {
 			})
 		},
     reSearchRooms(){
-			this.$axios.post(`/v1/rooms/search`,{data: this.search})
+      const formData = new FormData()
+      formData.append('data', this.search)
+			this.$axios.post(`/v1/rooms/search`, formData)
 			.then((response) => {
         this.rooms = null
 				this.rooms = response.data.data

@@ -3,36 +3,23 @@
 		<DetailMenu
 			:room="this.room"
 			:users="this.users"
-			:current_user="this.current_user"
+			:current_user="this.user_id"
 		></DetailMenu>
 
 		<MessageField
 			:messages="this.messages"
-			:current_user="this.current_user"
+			:current_user="this.user_id"
 			:room="this.room"
 			:users="this.users"
 			v-model="message"
 		></MessageField>
 
-		<v-card
-			class="mx-auto"
-			max-width="300"
-			tile
+		<UserMenu
+			:users="users"
+			:friends="this.friends"
+			:current_user="this.user_id"
 		>
-			<v-list dense>
-				<v-list-item-title class="list-title">所属ユーザー</v-list-item-title>
-				<v-list-item-group>
-					<v-list-item
-						v-for="(user, i) in users"
-						:key="i"
-					>
-						<v-list-item-content>
-							<UserMenu	:user="user"></UserMenu>
-						</v-list-item-content>
-					</v-list-item>
-				</v-list-item-group>
-			</v-list>
-		</v-card>
+		</UserMenu>
 	</v-row>
 
 </template>
@@ -54,17 +41,16 @@ export default {
 		return{
 			room: [],
 			users: [],
-			current_user: [],
 			messages: [],
 			message: null,
+			friends: []
 		}
 	},
 	computed:{
 		...mapGetters('user', ['user_id', 'icon'])
 	},
 	mounted(){
-		this.fetchRoom(),
-		this.fetchCurrentUser()
+		this.fetchRoom()
 	},
 	methods:{
 		async fetchRoom(){
@@ -79,6 +65,10 @@ export default {
 				this.room['private'] = room_data.private
 				this.users = response.data.data[1]
 				this.messages = response.data.data[2]
+				const friend_datas = response.data.data[3]
+				for(let i=0;i<friend_datas.length;i++){
+					this.friends.push(friend_datas[i]['id'])
+				}
 				const result = this.users.some((ele) => ele.id === this.user_id)
 				if(room_data.private && !result){
 					this.$router.push('/rooms')
@@ -86,17 +76,6 @@ export default {
 			})
 			.catch((error) => {
 				this.$router.push('/rooms')
-			})
-		},
-		async fetchCurrentUser(){
-			await this.$axios.get(`/auth/validate_token`)
-			.then((response) => {
-				const user_data = response.data.data
-				this.current_user['id'] = user_data.id
-				this.current_user['nickname'] = user_data.nickname
-			},
-			(error) => {
-				console.log(error)
 			})
 		},
 		...mapActions('flashMessage', ['showMessage'])

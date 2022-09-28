@@ -15,84 +15,9 @@
           </v-btn>
         </v-container>
       </v-form>
-      <!-- 自分の所属するルームを表示or傾向によるおすすめ表示 -->
-      <v-row><h1>人気のルーム</h1></v-row>
-        <v-slide-group
-          v-model="model"
-          class="pa-4"
-          active-class="success"
-          show-arrows
-        >
-          <v-slide-item
-            v-for="room in this.favorite_rooms"
-            :key="room.id"
-          >
-            <v-row
-              no-gutters
-              class="test"
-              v-if="`${room.private}` === 'false'"
-            >
-              <nuxt-link :to="`/rooms/${room.id}`">
-                <v-card
-                  class="mx-auto"
-                  max-width="340"
-                >
-                  <v-img
-                    :src="`${room.image_path}`"
-                    height="200px"
-                  ></v-img>
-                  <v-card-title>
-                    {{room.name}}
-                  </v-card-title>
-                  <v-card-subtitle>
-                    {{room.description}}
-                  </v-card-subtitle>
-                </v-card>
-              </nuxt-link>
-            </v-row>
-          </v-slide-item>
-        </v-slide-group>
 
-      <!-- ここに最新のルームを表示 -->
-        <v-row><h1>最新ルーム</h1></v-row>
-        <v-slide-group
-          v-model="model"
-          class="pa-4"
-          active-class="success"
-          show-arrows
-        >
-          <v-slide-item
-            v-for="room in this.rooms_data"
-            :key="room.id"
-          >
-            <v-row
-              no-gutters
-              class="test"
-              v-if="`${room.private}` === 'false'"
-            >
-              <nuxt-link :to="`/rooms/${room.id}`">
-                <v-card
-                  class="mx-auto"
-                  max-width="340"
-                >
-                  <v-img
-                    :src="`${room.image_path}`"
-                    height="200px"
-                  ></v-img>
-                  <v-card-title>
-                    {{room.name}}
-                  </v-card-title>
-                  <v-card-subtitle>
-                    {{room.description}}
-                  </v-card-subtitle>
-                </v-card>
-              </nuxt-link>
-            </v-row>
-          </v-slide-item>
-        </v-slide-group>
-
-        <!-- ここにワンクリック検索用の画像をはる -->
-      <v-row><h1>ジャンル</h1></v-row>
+      <!-- ここにワンクリック検索用の画像をはる -->
+      <v-row><h1>ジャンルを選択する</h1></v-row>
       <v-row no-gutters >
           <v-card
             v-for="(genre, index) in genres"
@@ -100,13 +25,13 @@
             class="mx-auto"
             max-width="300"
           >
-            <nuxt-link :to="`/rooms/search?query=${genre}`">
+            <nuxt-link :to="`/rooms/search?query=${genre.name}`">
               <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                :src="genre.image"
                 height="200px"
               ></v-img>
               <v-card-title>
-                {{genre}}
+                {{genre.name}}
               </v-card-title>
             </nuxt-link>
         </v-card>
@@ -122,36 +47,47 @@ export default {
 		return{
       model: null,
       rooms_data: null,
-      favorite_rooms: null,
       search: null,
-      genres: [
-        'ゲーム',
-        'アニメ',
-        '漫画',
-        'カメラ',
-        'スポーツ',
-        '旅',
-        'プラモデル',
-        '小説',
-        'イラスト'
+      genres:[
+        {
+          'name': 'ゲーム',
+          'image': require("@/assets/images/src/game.jpg")
+        },
+        {
+          'name': 'アニメ',
+          'image': require("@/assets/images/src/anime.jpg")
+        },
+        {
+          'name': '漫画',
+          'image': require("@/assets/images/src/comic.jpg")
+        },
+        {
+          'name': 'カメラ',
+          'image': require("@/assets/images/src/camera.jpg")
+        },
+        {
+          'name': 'スポーツ',
+          'image': require("@/assets/images/src/sports.jpg")
+        },
+        {
+          'name': '旅',
+          'image': require("@/assets/images/src/trip.jpg")
+        },
+        {
+          'name': 'プラモデル',
+          'image': require("@/assets/images/src/model.jpg")
+        },
+        {
+          'name': '小説',
+          'image': require("@/assets/images/src/novel.jpg")
+        },
+        {
+          'name': 'イラスト',
+          'image': require("@/assets/images/src/ilustration.jpg")
+        },
       ]
 		}
-	},
-  mounted(){
-    this.fetchRooms()
-  },
-  methods:{
-    fetchRooms(){
-      this.$axios.get('v1/rooms')
-      .then((response) => {
-        this.rooms_data = response.data.data[0]
-        this.favorite_rooms = response.data.data[1]
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    }
-  }
+	}
 }
 </script>
 

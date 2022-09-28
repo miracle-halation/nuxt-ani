@@ -79,5 +79,6 @@ export default {
     transpile: [
       'vee-validate/dist/rules',
     ],
-  }
+  },
+  loading: true
 }

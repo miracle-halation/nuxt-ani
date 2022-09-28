@@ -8,7 +8,7 @@
       fixed
       app
     >
-    <!-- のちにチャットルームを表示するかも -->
+      <!-- ログイン状態によって表記を変える -->
       <v-list v-if="!isLoggedIn">
         <v-list-item
           v-for="(item, i) in items"
@@ -25,6 +25,8 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
+
+      <!-- ログインしている時 -->
       <v-list v-else>
         <v-list-item
           v-for="(item, i) in login_items"
@@ -33,29 +35,41 @@
           router
           exact
         >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
+          <v-list-item-avatar>
+            <v-img :src="item.icon"></v-img>
+          </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+
     <v-app-bar
       :clipped-left="!clipped"
       fixed
       app
     >
+      <Loading></Loading>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <template v-if="isLoggedIn">
-        <nuxt-link :to="`/user/${user_id}/profile`">
-          <img  :src="icon" class="user-image">
-        </nuxt-link>
-        <v-btn color="green" @click="handleLogout">ログアウト</v-btn>
-      </template>
+        <template v-if="isLoggedIn">
+          <nuxt-link :to="`/rooms`" tag="div">
+            <v-toolbar-title v-text="title" />
+          </nuxt-link>
+          <nuxt-link :to="`/rooms/new`" tag="div">
+            <v-btn color="blue" class="new_room">新規ルーム作成</v-btn>
+          </nuxt-link>
+          <v-spacer />
+          <nuxt-link :to="`/user/${user_id}/profile`">
+            <img :src="icon" class="user-image">
+          </nuxt-link>
+          <v-btn color="green" @click="handleLogout">ログアウト</v-btn>
+        </template>
+        <template v-else>
+          <nuxt-link :to="`/`" tag="div">
+            <v-toolbar-title v-text="title" />
+          </nuxt-link>
+        </template>
     </v-app-bar>
     <v-main>
       <v-container class="main-container" fluid>
@@ -75,10 +89,12 @@
 <script>
 import {mapGetters, mapActions} from 'vuex'
 import FlashMessage from "~/components/FlashMessage.vue"
+import Loading from '~/components/Loading'
 
 export default {
   components:{
-    FlashMessage: FlashMessage
+    FlashMessage: FlashMessage,
+    Loading: Loading
   },
   data () {
     return {
@@ -102,27 +118,36 @@ export default {
           to: '/signup'
         }
       ],
-      login_items: [
-        {
-          icon: 'mdi-apps',
-          title: 'トップへ',
-          to: '/rooms'
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: '新規ルーム作成',
-          to: '/rooms/new'
-        }
-      ],
+      login_items: [],
       miniVariant: false,
       mobile_breakpoint: 1904,
-      title: 'オリジナルアプリ'
+      title: 'オリジナルアプリ',
+      loading: false
     }
   },
   computed:{
     ...mapGetters('user', ['user_id','isLoggedIn', 'icon'])
 	},
+  mounted(){
+    this.fetchRooms()
+  },
   methods:{
+    fetchRooms(){
+      this.$axios.get('v1/rooms')
+      .then((response) => {
+        const rooms = response.data.data[0]
+        for(let i=0;i<rooms.length;i++){
+          this.login_items.push({
+            icon: rooms[i]['image_path'],
+            title: rooms[i]['name'],
+            to: '/rooms/'+rooms[i]['id']
+          })
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
     async handleLogout(){
       await this.logout()
       this.$router.go('/login')
@@ -141,5 +166,8 @@ export default {
     width:  50px;
     height: 50px;
     margin-right: 2rem;
+  }
+  .new_room{
+    margin-left: 1rem;
   }
 </style>

@@ -66,7 +66,7 @@ export default {
 		chat: Number,
 		index: Number,
 		room: Array,
-		current_user: Array
+		current_user: String
 	},
 	data(){
 		return{
@@ -87,7 +87,7 @@ export default {
 		async updateMessage(){
 			const formData = new FormData()
 			formData.append('message[content]', this.new_message)
-			formData.append('message[user_id]', this.current_user.id)
+			formData.append('message[user_id]', this.current_user)
 			formData.append('message[room_id]', this.room.id)
 			await this.$axios.patch(`/v1/messages/${this.update_id}`, formData)
 			.then((response) => {
