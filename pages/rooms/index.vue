@@ -25,13 +25,13 @@
             class="mx-auto"
             max-width="300"
           >
-            <nuxt-link :to="`/rooms/search?query=${genre}`">
+            <nuxt-link :to="`/rooms/search?query=${genre.name}`">
               <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
+                :src="genre.image"
                 height="200px"
               ></v-img>
               <v-card-title>
-                {{genre}}
+                {{genre.name}}
               </v-card-title>
             </nuxt-link>
         </v-card>
@@ -48,16 +48,43 @@ export default {
       model: null,
       rooms_data: null,
       search: null,
-      genres: [
-        'ゲーム',
-        'アニメ',
-        '漫画',
-        'カメラ',
-        'スポーツ',
-        '旅',
-        'プラモデル',
-        '小説',
-        'イラスト'
+      genres:[
+        {
+          'name': 'ゲーム',
+          'image': require("@/assets/images/src/game.jpg")
+        },
+        {
+          'name': 'アニメ',
+          'image': require("@/assets/images/src/anime.jpg")
+        },
+        {
+          'name': '漫画',
+          'image': require("@/assets/images/src/comic.jpg")
+        },
+        {
+          'name': 'カメラ',
+          'image': require("@/assets/images/src/camera.jpg")
+        },
+        {
+          'name': 'スポーツ',
+          'image': require("@/assets/images/src/sports.jpg")
+        },
+        {
+          'name': '旅',
+          'image': require("@/assets/images/src/trip.jpg")
+        },
+        {
+          'name': 'プラモデル',
+          'image': require("@/assets/images/src/model.jpg")
+        },
+        {
+          'name': '小説',
+          'image': require("@/assets/images/src/novel.jpg")
+        },
+        {
+          'name': 'イラスト',
+          'image': require("@/assets/images/src/ilustration.jpg")
+        },
       ]
 		}
 	}
