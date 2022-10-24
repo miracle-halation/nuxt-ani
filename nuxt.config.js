@@ -46,7 +46,7 @@ export default {
   ],
 
   axios: {
-    baseUrl: 'http://localhost:8000'
+    baseUrl: 'http://localhost'
   },
 
   router: {

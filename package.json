@@ -17,12 +17,12 @@
     "universal-cookie": "^4.0.4",
     "vee-validate": "^3.4.12",
     "vue-simple-suggest": "^1.11.2",
-    "vuetify": "^2.5.5"
+    "vuetify": "^2.5.5",
+    "@nuxtjs/vuetify": "^1.12.1"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.7",
     "@nuxt/typescript-build": "^2.1.0",
-    "@nuxtjs/vuetify": "^1.12.1",
     "@vue/test-utils": "^1.2.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^27.0.5",
