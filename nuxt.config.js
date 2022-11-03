@@ -46,7 +46,7 @@ export default {
   ],
 
   axios: {
-    baseUrl: 'http://localhost'
+    baseUrl: 'http://yk-animedia-service.link'
   },
 
   router: {
