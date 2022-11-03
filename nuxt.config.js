@@ -3,8 +3,8 @@ import colors from 'vuetify/es5/util/colors'
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - nuxt-ani',
-    title: 'nuxt-ani',
+    // titleTemplate: '%s - nuxt-ani',
+    title: 'Animedia',
     htmlAttrs: {
       lang: 'en'
     },

@@ -121,7 +121,7 @@ export default {
       login_items: [],
       miniVariant: false,
       mobile_breakpoint: 1904,
-      title: 'オリジナルアプリ',
+      title: 'Animedia',
       loading: false
     }
   },
