@@ -98,7 +98,7 @@ export default {
 	created(){
 		if (process.client) {
 			const ActionCable = require('actioncable')
-			const cable = ActionCable.createConsumer('ws://yk-animedia-service.link:80/cable');
+			const cable = ActionCable.createConsumer('ws://backend.yk-animedia-service.link:80/cable');
 			this.messageChannel = cable.subscriptions.create( "RoomChannel",{
 				received: (data) => {
 					this.messages.push(data.message.message)
